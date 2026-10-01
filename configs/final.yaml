@@ -1,0 +1,282 @@
+# AgriAI — Final Configuration
+# Adaptive Smart Farming Framework using STO-Optimized LS-HGNet
+# M0 Frozen Configuration — Final Experiments Phase
+
+# ─────────────────────────────────────────────────────────
+# EXPERIMENT IDENTITY
+# ─────────────────────────────────────────────────────────
+experiment:
+  name: "agri_ai_final"
+  phase: "final"
+  seeds: [42, 123, 456]   # Multi-seed for final evaluation
+  description: "Final experimental configuration with full architecture and evaluation budget"
+
+# ─────────────────────────────────────────────────────────
+# DATASET
+# ─────────────────────────────────────────────────────────
+dataset:
+  name: "PlantVillage"
+  task: "tomato_disease_classification"
+  num_classes: 10         # TO BE VERIFIED against downloaded dataset in M1
+  root_dir: "data/raw/plantvillage"
+  split_dir: "data/splits"
+  train_csv: "data/splits/train.csv"
+  val_csv: "data/splits/val.csv"
+  test_csv: "data/splits/test.csv"
+
+  split:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+    strategy: "stratified"
+    seed: 42              # Fixed seed for reproducible splits
+
+# ─────────────────────────────────────────────────────────
+# PREPROCESSING
+# ─────────────────────────────────────────────────────────
+preprocessing:
+  input_size: 224         # Final: 224x224 (Engineering Decision — see architecture_decisions.md)
+  normalize:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+
+# ─────────────────────────────────────────────────────────
+# AUGMENTATION (Training Only)
+# ─────────────────────────────────────────────────────────
+augmentation:
+  train:
+    random_horizontal_flip: 0.5
+    random_vertical_flip: 0.5
+    random_rotation_degrees: 30
+    color_jitter:
+      brightness: 0.3
+      contrast: 0.3
+      saturation: 0.3
+      hue: 0.1
+    random_resized_crop:
+      scale_min: 0.7
+      scale_max: 1.0
+  val:
+    apply: false
+  test:
+    apply: false
+
+# ─────────────────────────────────────────────────────────
+# MODEL — LS-HGNet Final Config
+# ─────────────────────────────────────────────────────────
+model:
+  architecture: "LSHGNet"
+  # Final configuration (Engineering Decision — see architecture_decisions.md)
+  base_channels: 64       # Engineering Decision
+  num_stacks: 3           # Engineering Decision
+  encoder_levels: 4       # Engineering Decision
+  dilation_rates: [1, 2, 4]  # Engineering Decision — NOT from source paper
+  inter_stack_skip: true  # Engineering Decision
+  upsampling: "bilinear"  # Engineering Decision
+  dropout: 0.3            # Default value; overridden by best STO result
+
+# ─────────────────────────────────────────────────────────
+# BASELINE CNN
+# ─────────────────────────────────────────────────────────
+baseline:
+  architecture: "BaselineCNN"
+  target_params: 500000
+  num_blocks: 3
+  channels: [32, 64, 128]
+
+# ─────────────────────────────────────────────────────────
+# TRAINING — Default Hyperparameters
+# ─────────────────────────────────────────────────────────
+training:
+  epochs: 100             # Final: full training duration
+  batch_size: 32          # Default; overridden by best STO hyperparameters
+  optimizer: "adamw"
+  learning_rate: 1.0e-3   # Default; overridden by best STO hyperparameters
+  weight_decay: 1.0e-4    # Default; overridden by best STO hyperparameters
+  scheduler:
+    type: "cosine_annealing"
+    T_max: 100
+    eta_min: 1.0e-6
+  loss: "cross_entropy"   # Update to weighted CE if class imbalance is significant
+
+# ─────────────────────────────────────────────────────────
+# STO HYPERPARAMETER OPTIMIZATION
+# ─────────────────────────────────────────────────────────
+stoa:
+  # Final budget (Engineering Decision — see architecture_decisions.md)
+  num_agents: 10
+  num_iterations: 10
+  total_evaluations: 100  # = num_agents * num_iterations
+
+  search_space:
+    learning_rate:
+      min: 1.0e-4
+      max: 1.0e-2
+      scale: "log"
+    weight_decay:
+      min: 1.0e-6
+      max: 1.0e-2
+      scale: "log"
+    dropout:
+      min: 0.0
+      max: 0.5
+      scale: "linear"
+    batch_size:
+      values: [16, 32, 64]
+      type: "discrete"
+
+  fitness: "1_minus_macro_f1"
+  fitness_data: "validation"
+
+  # IMPORTANT: C_f exact formulation TO BE VERIFIED from Dhiman & Kumar (2019)
+  boundary_handling: "clip"
+
+# ─────────────────────────────────────────────────────────
+# RANDOM SEARCH (Equal Budget)
+# ─────────────────────────────────────────────────────────
+random_search:
+  total_evaluations: 100  # MUST equal STOA total_evaluations (Scientific Requirement)
+  seed: 42
+
+# ─────────────────────────────────────────────────────────
+# EXPERIMENT MATRIX
+# ─────────────────────────────────────────────────────────
+# EXP_001: Baseline CNN, default HPs
+# EXP_002: LS-HGNet, default HPs
+# EXP_003: LS-HGNet + STOA best HPs
+# EXP_004: LS-HGNet + Random Search best HPs
+experiments:
+  EXP_001:
+    model: "BaselineCNN"
+    hyperparameters: "default"
+    seeds: [42, 123, 456]
+  EXP_002:
+    model: "LSHGNet"
+    hyperparameters: "default"
+    seeds: [42, 123, 456]
+  EXP_003:
+    model: "LSHGNet"
+    hyperparameters: "stoa_best"
+    seeds: [42, 123, 456]
+  EXP_004:
+    model: "LSHGNet"
+    hyperparameters: "random_search_best"
+    seeds: [42, 123, 456]
+
+# ─────────────────────────────────────────────────────────
+# MULTI-SEED EVALUATION
+# ─────────────────────────────────────────────────────────
+evaluation:
+  final_seeds: [42, 123, 456]
+  report_format: "mean_std"
+  # Report: mean +/- standard deviation across seeds
+
+# ─────────────────────────────────────────────────────────
+# EVALUATION METRICS
+# ─────────────────────────────────────────────────────────
+metrics:
+  classification:
+    - accuracy
+    - precision_macro
+    - precision_weighted
+    - precision_per_class
+    - recall_macro
+    - recall_weighted
+    - recall_per_class
+    - f1_macro
+    - f1_weighted
+    - f1_per_class
+    - confusion_matrix
+    - roc_auc_per_class
+    - pr_auc_per_class
+  computational:
+    - parameter_count
+    - trainable_parameter_count
+    - model_size_mb
+    - cpu_inference_latency_ms
+  optimization:
+    - best_fitness
+    - num_evaluations
+    - optimization_runtime_s
+    - convergence_history
+
+# ─────────────────────────────────────────────────────────
+# EXPLAINABILITY (Grad-CAM)
+# ─────────────────────────────────────────────────────────
+grad_cam:
+  target_layer: "final_decoder_output"
+  save_dir: "experiments/{experiment_name}/grad_cam"
+  num_examples_per_class: 5
+
+# ─────────────────────────────────────────────────────────
+# CALIBRATION (Temperature Scaling)
+# ─────────────────────────────────────────────────────────
+calibration:
+  method: "temperature_scaling"
+  fit_data: "validation"
+  save_dir: "experiments/{experiment_name}/calibration"
+  metrics:
+    - ece
+    - reliability_diagram
+    - raw_confidence
+    - calibrated_confidence
+
+# ─────────────────────────────────────────────────────────
+# ROBUSTNESS TESTING
+# ─────────────────────────────────────────────────────────
+robustness:
+  perturbations:
+    - type: "brightness_increase"
+      severity_levels: [1.2, 1.5, 2.0]
+    - type: "brightness_decrease"
+      severity_levels: [0.8, 0.5, 0.3]
+    - type: "contrast_change"
+      severity_levels: [0.5, 1.5, 2.0]
+    - type: "gaussian_noise"
+      severity_levels: [0.05, 0.1, 0.2]
+    - type: "gaussian_blur"
+      severity_levels: [3, 5, 9]
+    - type: "jpeg_compression"
+      severity_levels: [80, 50, 20]
+    - type: "low_light"
+      severity_levels: [0.7, 0.5, 0.3]
+  save_dir: "experiments/{experiment_name}/robustness"
+
+# ─────────────────────────────────────────────────────────
+# ABLATIONS (Planned — Not Executed in M0)
+# ─────────────────────────────────────────────────────────
+ablations:
+  ABL_01:
+    name: "MultiDilatedBlock vs single-dilation bottleneck"
+    status: "planned"
+  ABL_02:
+    name: "With vs without inter-stack skip connections"
+    status: "planned"
+  ABL_03:
+    name: "Stack count: 1 vs 2 vs 3"
+    status: "planned"
+  ABL_04:
+    name: "With vs without morphological preprocessing"
+    status: "planned"
+  ABL_05:
+    name: "128x128 vs 224x224 input resolution"
+    status: "planned"
+  ABL_06:
+    name: "Depthwise-separable vs standard convolution"
+    status: "planned"
+
+# ─────────────────────────────────────────────────────────
+# OUTPUT AND LOGGING
+# ─────────────────────────────────────────────────────────
+output:
+  experiments_dir: "experiments"
+  checkpoints_dir: "experiments/{experiment_name}/checkpoints"
+  logs_dir: "experiments/{experiment_name}/logs"
+  results_dir: "experiments/{experiment_name}/results"
+  save_best_model: true
+  save_frequency_epochs: 10
+
+logging:
+  level: "INFO"
+  log_to_file: true
+  tensorboard: true

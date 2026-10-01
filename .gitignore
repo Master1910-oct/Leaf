@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+.installed.cfg
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env/
+ENV/
+
+# Environment variables — NEVER commit
+.env
+
+# Datasets — store separately, never in Git
+data/raw/
+data/processed/
+datasets/
+*.csv.gz
+
+# Trained model weights — store separately
+models/*.pt
+models/*.pth
+models/*.onnx
+models/*.bin
+
+# Experiment checkpoints — store separately
+experiments/*/checkpoints/
+experiments/*/logs/*.tfevents.*
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# IDE and OS
+.vscode/
+.idea/
+*.suo
+*.user
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Node.js (React dashboard)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Build outputs
+frontend/build/
+frontend/dist/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+
+# Testing
+.pytest_cache/
+.tox/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~

@@ -1,0 +1,202 @@
+# AgriAI — Development Configuration
+# Adaptive Smart Farming Framework using STO-Optimized LS-HGNet
+# M0 Frozen Configuration — Development Phase
+
+# ─────────────────────────────────────────────────────────
+# EXPERIMENT IDENTITY
+# ─────────────────────────────────────────────────────────
+experiment:
+  name: "agri_ai_development"
+  phase: "development"
+  seed: 42
+  description: "Development configuration for rapid iteration on local 16 GB laptop"
+
+# ─────────────────────────────────────────────────────────
+# DATASET
+# ─────────────────────────────────────────────────────────
+dataset:
+  name: "PlantVillage"
+  task: "tomato_disease_classification"
+  num_classes: 10         # TO BE VERIFIED against downloaded dataset
+  root_dir: "data/raw/plantvillage"
+  split_dir: "data/splits"
+  train_csv: "data/splits/train.csv"
+  val_csv: "data/splits/val.csv"
+  test_csv: "data/splits/test.csv"
+
+  split:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+    strategy: "stratified"
+    seed: 42
+
+# ─────────────────────────────────────────────────────────
+# PREPROCESSING
+# ─────────────────────────────────────────────────────────
+preprocessing:
+  input_size: 128         # Development: 128x128 (Engineering Decision — see architecture_decisions.md)
+  normalize:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+
+# ─────────────────────────────────────────────────────────
+# AUGMENTATION (Training Only)
+# ─────────────────────────────────────────────────────────
+augmentation:
+  train:
+    random_horizontal_flip: 0.5
+    random_vertical_flip: 0.5
+    random_rotation_degrees: 30
+    color_jitter:
+      brightness: 0.3
+      contrast: 0.3
+      saturation: 0.3
+      hue: 0.1
+    random_resized_crop:
+      scale_min: 0.7
+      scale_max: 1.0
+  val:
+    apply: false   # Deterministic preprocessing only
+  test:
+    apply: false   # Deterministic preprocessing only
+
+# ─────────────────────────────────────────────────────────
+# MODEL — LS-HGNet Development Config
+# ─────────────────────────────────────────────────────────
+model:
+  architecture: "LSHGNet"
+  # Development configuration (Engineering Decision — see architecture_decisions.md)
+  base_channels: 32       # Engineering Decision
+  num_stacks: 2           # Engineering Decision
+  encoder_levels: 3       # Engineering Decision
+  dilation_rates: [1, 2, 4]  # Engineering Decision — NOT from source paper
+  inter_stack_skip: true  # Engineering Decision
+  upsampling: "bilinear"  # Engineering Decision
+  dropout: 0.3            # Default value; overridden by STO search
+
+# ─────────────────────────────────────────────────────────
+# BASELINE CNN
+# ─────────────────────────────────────────────────────────
+baseline:
+  architecture: "BaselineCNN"
+  target_params: 500000   # Approximately 500K parameters
+  num_blocks: 3
+  channels: [32, 64, 128]
+
+# ─────────────────────────────────────────────────────────
+# TRAINING — Default Hyperparameters
+# ─────────────────────────────────────────────────────────
+training:
+  epochs: 50              # Development: reduced epoch count for fast iteration
+  batch_size: 32          # Default; overridden by STO search
+  optimizer: "adamw"
+  learning_rate: 1.0e-3   # Default; overridden by STO search
+  weight_decay: 1.0e-4    # Default; overridden by STO search
+  scheduler:
+    type: "cosine_annealing"
+    T_max: 50             # Match training epochs
+    eta_min: 1.0e-6
+  loss: "cross_entropy"   # Weighted CE if class imbalance confirmed in M1
+
+# ─────────────────────────────────────────────────────────
+# STO HYPERPARAMETER OPTIMIZATION
+# ─────────────────────────────────────────────────────────
+stoa:
+  # Development budget (Engineering Decision — see architecture_decisions.md)
+  num_agents: 5
+  num_iterations: 5
+  total_evaluations: 25   # = num_agents * num_iterations
+
+  search_space:
+    learning_rate:
+      min: 1.0e-4
+      max: 1.0e-2
+      scale: "log"
+    weight_decay:
+      min: 1.0e-6
+      max: 1.0e-2
+      scale: "log"
+    dropout:
+      min: 0.0
+      max: 0.5
+      scale: "linear"
+    batch_size:
+      values: [16, 32, 64]
+      type: "discrete"
+
+  fitness: "1_minus_macro_f1"   # Minimization objective
+  fitness_data: "validation"    # NEVER test set
+
+  # STOA parameters (to be verified against Dhiman & Kumar 2019 in M1)
+  # C_f decreases from 2 to (2 - t/T_max) — DISCREPANCY: some sources show 2 - 2*(t/T_max)
+  # Exact formulation MUST be verified from primary paper
+  boundary_handling: "clip"     # Engineering Decision
+
+# ─────────────────────────────────────────────────────────
+# RANDOM SEARCH (Equal Budget)
+# ─────────────────────────────────────────────────────────
+random_search:
+  total_evaluations: 25   # MUST equal STOA total_evaluations (Scientific Requirement)
+  seed: 42
+
+# ─────────────────────────────────────────────────────────
+# MULTI-SEED EVALUATION
+# ─────────────────────────────────────────────────────────
+evaluation:
+  dev_seed: 42            # Single seed for development experiments
+  final_seeds: [42, 123, 456]  # Multi-seed for final experiments only
+  report_format: "mean_std"    # Report as mean +/- std
+
+# ─────────────────────────────────────────────────────────
+# EXPLAINABILITY (Grad-CAM)
+# ─────────────────────────────────────────────────────────
+grad_cam:
+  target_layer: "final_decoder_output"  # Engineering Decision — see architecture_decisions.md
+  save_dir: "experiments/{experiment_name}/grad_cam"
+  num_examples_per_class: 5
+
+# ─────────────────────────────────────────────────────────
+# CALIBRATION (Temperature Scaling)
+# ─────────────────────────────────────────────────────────
+calibration:
+  method: "temperature_scaling"
+  fit_data: "validation"   # NEVER test set
+  save_dir: "experiments/{experiment_name}/calibration"
+
+# ─────────────────────────────────────────────────────────
+# ROBUSTNESS TESTING
+# ─────────────────────────────────────────────────────────
+robustness:
+  perturbations:
+    - type: "brightness_increase"
+      severity_levels: [1.2, 1.5, 2.0]
+    - type: "brightness_decrease"
+      severity_levels: [0.8, 0.5, 0.3]
+    - type: "contrast_change"
+      severity_levels: [0.5, 1.5, 2.0]
+    - type: "gaussian_noise"
+      severity_levels: [0.05, 0.1, 0.2]   # sigma values
+    - type: "gaussian_blur"
+      severity_levels: [3, 5, 9]           # kernel sizes (must be odd)
+    - type: "jpeg_compression"
+      severity_levels: [80, 50, 20]        # quality factors
+    - type: "low_light"
+      severity_levels: [0.7, 0.5, 0.3]    # brightness multipliers
+  save_dir: "experiments/{experiment_name}/robustness"
+
+# ─────────────────────────────────────────────────────────
+# OUTPUT AND LOGGING
+# ─────────────────────────────────────────────────────────
+output:
+  experiments_dir: "experiments"
+  checkpoints_dir: "experiments/{experiment_name}/checkpoints"
+  logs_dir: "experiments/{experiment_name}/logs"
+  results_dir: "experiments/{experiment_name}/results"
+  save_best_model: true
+  save_frequency_epochs: 10
+
+logging:
+  level: "INFO"
+  log_to_file: true
+  tensorboard: true
