@@ -3,7 +3,7 @@
 
 **Document version:** M0-DRAFT  
 **Date:** 2026-10-01  
-**Status:** AWAITING APPROVAL  
+**Status:** M0 Research Lock — Pending Final Verification (NOT READY — CRITICAL VERIFICATION REMAINS)  
 
 ---
 
@@ -308,18 +308,18 @@ Standard CE loss as default. If class imbalance is significant (confirmed during
 ## Decision: Data Augmentation Policy
 
 ### Decision
-Random horizontal flip (p=0.5), random vertical flip (p=0.5), random rotation (+/-30 deg), color jitter, random resized crop. Applied to training data only.
+Random horizontal flip (p=0.5), random rotation (+/-30 deg, p=0.5), color jitter (brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1), random resized crop (scale=0.7 to 1.0). Applied to training data only. **Random vertical flip is deliberately excluded from the default/final pipeline.**
 
 ### Source basis
 No augmentation policy specified by source papers for tomato classification.
 
 ### Our engineering choice
-Standard augmentation set commonly used in plant disease classification literature.
+Standard biologically appropriate augmentation set commonly used in plant pathology vision literature. Vertical flipping is excluded by default because upside-down leaf orientations are biologically non-standard for natural photographic capture of foliage. Vertical flip is retained strictly as an optional ablation experiment (ABL-05).
 
 ### Reason
-- Flips and rotations increase rotational invariance; leaf orientation in field images is arbitrary.
-- Color jitter accounts for lighting variation.
-- Random resized crop simulates partial occlusion and viewpoint variation.
+- Horizontal flips and rotations increase rotational invariance while maintaining biologically realistic leaf orientations.
+- Color jitter accounts for lighting and illumination variations.
+- Random resized crop simulates varying camera distances and partial occlusions.
 
 ### Alternatives considered
 - No augmentation: likely to overfit on smaller classes.
@@ -549,19 +549,37 @@ Include as an optional ablation to determine whether morphological preprocessing
 
 ---
 
-## Open Questions (To Be Resolved in M1)
+## Open Questions and Verification Classification
 
-| ID | Question | Resolution Path |
-|----|----------|----------------|
-| OQ-01 | Exact STO C_f formulation: does range go 2->1 or 2->0? | Read Dhiman & Kumar (2019) primary paper |
-| OQ-02 | Exact spiral update equation from primary paper | Read Dhiman & Kumar (2019) primary paper |
-| OQ-03 | Source smart-farming paper exact title, authors, DOI | Literature search during M1 |
-| OQ-04 | PlantVillage exact per-class image counts | Download dataset during M1; count files |
-| OQ-05 | PlantVillage license (CC0 vs. other) | Inspect dataset README/LICENSE file |
-| OQ-06 | Source paper's exact LS-HGNet architecture details | Read source paper during M1 |
-| OQ-07 | Whether 224x224 final config fits 16 GB RAM at batch 32 | Memory profiling during M1 |
-| OQ-08 | Whether class-weighted CE loss is needed | Measure class imbalance during M1 |
+### Critical Open Questions (Must Be Resolved Before M1 Implementation)
+
+| ID | Critical Question | Resolution Requirement |
+|----|-------------------|------------------------|
+| OQ-01 | STOA exact coefficient formulation: primary-source verification of $S_A = 2 - 2t/T_{max}$ vs. alternatives | Verify from primary paper: Dhiman & Kaur (2019) |
+| OQ-02 | STOA spiral update equation: exact mathematical form and numerical stabilization for $\rho = \exp(\theta)$ to prevent numerical explosion ($\exp(2\pi) \approx 535.49$) and excessive zero-bias | Verify from primary paper: Dhiman & Kaur (2019); define mathematical stabilization |
+| OQ-03 | Source LS-HGNet architectural specifications: verification of exact channel progression, depthwise separable configuration, bottleneck topology, and stem structure | Verify from primary smart-farming paper: Krishnan et al. (2024) |
+| OQ-04 | Default training augmentation policy confirmation: verify exclusion of vertical flip (reserved for optional ablation ABL-05) and exact jitter parameters across all configuration files | Reconciled in M0 correction pass; verified across configs and docs |
+
+### Non-Critical Open Questions (May Be Experimentally Resolved During M1/M2)
+
+| ID | Non-Critical Question | Resolution Path |
+|----|-----------------------|----------------|
+| OQ-05 | PlantVillage exact per-class image counts and class distribution | Download dataset during M1; count and log exact files |
+| OQ-06 | PlantVillage dataset licensing details (CC0 vs. other terms) | Inspect dataset README and LICENSE file upon download in M1 |
+| OQ-07 | Hardware memory feasibility: whether 224x224 final config fits 16 GB RAM at batch size 32 | Memory profiling during M1; adjust batch size to 16 if required |
+| OQ-08 | Class-weighted Cross-Entropy loss: whether inverse frequency weighting improves macro F1 | Measure class imbalance in M1; run ablation ABL-02 in M2 |
+| OQ-09 | Final dropout rate selection | Explored dynamically within STO search space [0.0, 0.5] |
+| OQ-10 | Optional edge deployment and ONNX runtime latency | Benchmark latency during optional deployment phase OBJ-11 |
+
+### Resolved in M0 Correction Pass
+
+| ID | Item | Resolution Summary |
+|----|------|-------------------|
+| RES-01 | STOA Primary Author Attribution | Corrected from initial draft misattribution to Gaurav Dhiman and Amandeep Kaur (2019), *EAAI*, 82, 148–174, DOI: 10.1016/j.engappai.2019.03.021 |
+| RES-02 | Smart Farming Source Paper Metadata | Confirmed: Krishnan, V. G., Vikranth, B., Sumithra, M., Laxmi, B. P., & Gowri, B. S. (2024). Smart Farming with Sooty Tern Optimization based LS-HGNet Classification Model. *IJERR*, 37(spl), 96–108. DOI: 10.52756/ijerr.2024.v37spl.008 |
+| RES-03 | Scope & Originality Boundary | Confirmed: Source paper performs UAV maize tassel detection; our project is an independent adaptation for tomato leaf disease classification |
+| RES-04 | Vertical Flip Contradiction | Removed random vertical flip from default configuration; documented strictly as optional ablation ABL-05 |
 
 ---
 
-*End of Architecture Decisions Log — M0 Draft*
+*End of Architecture Decisions Log — M0 Research Lock — Status: NOT READY — CRITICAL VERIFICATION REMAINS*

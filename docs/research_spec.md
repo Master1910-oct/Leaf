@@ -3,7 +3,7 @@
 
 **Document version:** M0-DRAFT  
 **Date:** 2026-10-01  
-**Status:** AWAITING APPROVAL  
+**Status:** M0 Research Lock — Pending Final Verification (NOT READY — CRITICAL VERIFICATION REMAINS)  
 
 ---
 
@@ -91,20 +91,27 @@ The following objectives are testable and measurable.
 ### 8.1 Primary Source (LS-HGNet + STOA Applied to Smart Farming)
 
 **Title:** Smart Farming with Sooty Tern Optimization based LS-HGNet Classification Model  
+**Authors:** V. Gokula Krishnan, B. Vikranth, M. Sumithra, B. Prathusha Laxmi, B. Shyamala Gowri  
+**Journal:** International Journal of Experimental Research and Review  
+**Volume:** 37 (special issue)  
+**Pages:** 96–108  
+**Year:** 2024  
+**DOI:** 10.52756/ijerr.2024.v37spl.008  
+**Publication Date:** 30 March 2024  
 **Context:** This paper applied a Lightweight Stacked Hourglass Network (LS-HGNet) with Sooty Tern Optimization for UAV-based maize tassel detection and counting in a smart farming context.  
-**What we use:** The conceptual combination of (a) lightweight stacked-hourglass architecture and (b) STOA-based optimization. The original task (maize tassel detection/counting from UAV imagery) differs fundamentally from our task (tomato leaf disease classification from leaf images).  
-**What we do NOT use:** Original code, original experimental results, UAV imagery, maize-specific design choices.
-
-> **NOTE:** The exact title, authors, publication venue, and DOI of this paper must be verified during M1 literature review. The description above is based on project planning documents. It is marked **TO BE VERIFIED** in the reference list.
+**What we use:** The conceptual combination of (a) lightweight stacked-hourglass architecture and (b) STOA-based hyperparameter optimization.  
+**What we do NOT use:** Original code, original experimental results, UAV imagery, or maize-specific design choices. Our project is an independent adaptation for tomato leaf disease classification, not a replication.
 
 ### 8.2 STOA Original Paper
 
 **Title:** STOA: A bio-inspired based optimization algorithm for industrial engineering problems  
-**Authors:** Gaurav Dhiman and Vijay Kumar  
+**Authors:** Gaurav Dhiman and Amandeep Kaur  
+**Journal:** Engineering Applications of Artificial Intelligence  
+**Volume:** 82  
+**Pages:** 148–174  
 **Year:** 2019  
-**Venue:** Engineering Applications of Artificial Intelligence  
-**DOI:** TO BE VERIFIED (candidate: 10.1016/j.engappai.2018.09.001)  
-**What we use:** Mathematical formulation of the STOA algorithm (collision avoidance, migration update, spiral attack behavior)
+**DOI:** 10.1016/j.engappai.2019.03.021  
+**What we use:** Mathematical principles of the STOA algorithm (collision avoidance, convergence towards best agent, spiral attack behavior) evaluated as a gradient-free population-based hyperparameter optimizer.
 
 ### 8.3 Stacked Hourglass Network
 
@@ -260,10 +267,11 @@ These are engineering decisions and may be ablated:
 | Augmentation | Parameters |
 |-------------|-----------|
 | Random horizontal flip | p = 0.5 |
-| Random vertical flip | p = 0.5 |
 | Random rotation | +/-30 degrees, p = 0.5 |
 | Color jitter | brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1 |
 | Random resized crop | scale=(0.7, 1.0) |
+
+> **Biological Validity Note on Vertical Flip:** Random vertical flip is deliberately excluded from the default training pipeline because vertical inversion produces biologically unnatural upside-down leaf orientations for field-captured foliar images. It is retained strictly as an optional experimental ablation (ABL-05).
 
 ### 11.4 Deterministic Preprocessing (All Splits)
 
@@ -404,74 +412,83 @@ Final Hourglass Output (B, C, H, W)
 | Property | Value |
 |----------|-------|
 | Full name | Sooty Tern Optimization Algorithm (STOA) |
-| Authors | Gaurav Dhiman and Vijay Kumar |
+| Authors | Gaurav Dhiman and Amandeep Kaur |
 | Year | 2019 |
-| Venue | Engineering Applications of Artificial Intelligence |
-| DOI | TO BE VERIFIED |
+| Venue | Engineering Applications of Artificial Intelligence, Vol. 82, pp. 148–174 |
+| DOI | 10.1016/j.engappai.2019.03.021 |
 
 ### 13.2 Algorithm Overview
 
-STOA is a population-based metaheuristic inspired by migration and prey-attacking behavior of sooty terns. Two phases:
+STOA is a population-based metaheuristic inspired by the migration and prey-attacking behavior of sooty terns. Two phases:
 
-1. **Exploration (Migration):** Agents move while avoiding collisions and converging toward the best-known position.
+1. **Exploration (Migration):** Agents move while avoiding collisions with neighbors and converging toward the best-known position.
 2. **Exploitation (Attacking):** Agents perform spiral motion toward the best position.
 
-### 13.3 Verified Formulation
+### 13.3 STOA Formulation — Pending Primary-Source Verification
 
-#### Phase 1: Exploration
+> **CRITICAL VERIFICATION NOTICE:** The equations below represent the candidate STOA formulation synthesized from the literature (Dhiman & Kaur, 2019; Kwok, arXiv:2511.17556). Primary-source verification and mathematical stabilization are strictly required before M1 implementation begins. M1 implementation code must NOT proceed using guessed equations.
+
+#### Phase 1: Exploration (Migration)
 
 **Collision avoidance:**
+Agents calculate a collision-free position using a linearly decreasing coefficient $S_A$:
 
-    x_ca(t) = C_f * x(t)
+    x_ca(t+1) = x_ca(t) * S_A
 
-    C_f = 2 - t/T_max
+    S_A = 2 - 2 * (t / T_max)
 
-where t = current iteration, T_max = maximum iterations. C_f decreases from 2 to 1.
-
-> **DISCREPANCY NOTE:** Secondary sources show C_a = 2 - 2*(t/T_max), giving a range of 2->0 instead of 2->1. The exact coefficient in the original paper (Dhiman & Kumar, 2019) must be verified from the primary source before implementation. This is recorded as an open question.
+where $t$ = current iteration, $T_{max}$ = maximum iterations. $S_A$ decreases linearly from 2 to 0 over the search process.
 
 **Convergence toward best agent:**
+Agents adjust trajectory toward the fittest neighbor found so far:
 
-    x_cv(t) = D_f * (x_best(t) - x(t))
-    D_f = r_1 * x(t),  r_1 ~ Uniform(0, 1)
+    x_cv(t+1) = 0.5 * r * (x_best(t) - x(t))
+
+where $r \sim \text{Uniform}(0, 1)^D$ is a random vector, and $*$ denotes element-wise multiplication.
 
 **Migration update:**
+The updated displacement combines collision avoidance and convergence:
 
-    x_m(t) = x_ca(t) + x_cv(t)
+    Delta_x(t+1) = x_ca(t+1) + x_cv(t+1)
 
-#### Phase 2: Exploitation (Spiral Attack)
+#### Phase 2: Exploitation (Spiral Attacking)
 
-Spiral parameters:
+In the hunting phase, agents execute a 3D spiral trajectory around the prey:
 
-    theta ~ Uniform(0, 2*pi)
-    rho = exp(theta)
+    theta ~ Uniform(0, 2 * pi)
     alpha = rho * sin(theta)
     beta  = rho * cos(theta)
     gamma = rho * theta
 
-Position update:
-
-    x(t+1) = D_f * alpha * beta * gamma + x_best(t)
-
-> **IMPORTANT CAVEAT:** The combined product form above may differ from the original paper's vector-form spiral update. The original likely defines separate component updates. This MUST be verified from Dhiman & Kumar (2019) before implementation. Any deviation from the original will be documented in architecture_decisions.md with classification as: correction / adaptation / unsupported modification.
+> **MATHEMATICAL STABILIZATION ISSUE:** In Dhiman & Kaur (2019, Eq. 9), $\rho$ is defined as $\rho = \exp(\theta)$. For $\theta \in [0, 2\pi]$, $\exp(2\pi) \approx 535.49$. As proven by Kwok (arXiv:2511.17556), this exponential magnitude drives agents far outside the bounded search space unless constrained or damped.
+> 
+> **Candidate Position Update Formulations:**
+> - **Formulation A (Hadamard product form from Dhiman & Kaur Eq. 7):**  
+>   $x(t+1) = x_{best}(t) \otimes \Delta x(t+1) \otimes (\alpha + \beta + \gamma)$  
+>   *(Note: Exhibits strong zero-bias toward origin as proven by Kudela, 2022 and Kwok, 2025)*
+> - **Formulation B (Additive displacement form):**  
+>   $x(t+1) = \Delta x(t+1) * (\alpha + \beta + \gamma) + x_{best}(t)$
+>
+> The exact equation and its stabilization strategy (e.g., bounded spiral radius $\rho \in (0, 1]$, damping factor, or projection) must be formally resolved before writing STOA Python code.
 
 ### 13.4 Boundary Handling
 
     x_i = clip(x_i, lb_i, ub_i)
 
-Clipping is chosen as the engineering decision. Alternatives (reflection, random resampling) may be ablated.
+Clipping to hyperparameter lower and upper bounds is chosen as the engineering decision.
 
 ### 13.5 Critical Claims Rules
 
-The following are PROHIBITED in all project documents:
+The following claims are STRICTLY PROHIBITED in all project documents:
 
 - "STOA guarantees convergence to the global optimum"
 - "STOA eliminates local minima"
-- "STOA is provably better than Random Search"
+- "STOA is provably better than Random Search or other metaheuristics"
+- "STOA guarantees superior classification accuracy"
 
-Required framing:
+Required empirical framing:
 
-- "Whether STOA provides a measurable advantage over equal-budget Random Search is an experimental question answered by measured results."
+> "STOA is used as a gradient-free population-based hyperparameter optimization method, and its effectiveness will be evaluated experimentally against a comparable Random Search baseline under an equal evaluation budget."
 
 ---
 
@@ -728,7 +745,7 @@ The following limitations must appear in all final reports and presentations:
 
 | Requirement | Status |
 |-------------|--------|
-| Random seeds documented (42, 123, 456 for final runs) | Frozen in M0 |
+| Random seeds documented (42, 123, 456 for final runs) | Set in M0 |
 | Split CSV files committed before training | Pending M1 |
 | requirements.txt / environment.yaml committed | Pending M1 |
 | Configuration YAML files committed | Committed in M0 |
@@ -739,11 +756,37 @@ The following limitations must appear in all final reports and presentations:
 
 ---
 
-## 28. References
+## 28. Open Questions and Verification Classification
 
-1. Dhiman, G., & Kumar, V. (2019). STOA: A bio-inspired based optimization algorithm for industrial engineering problems. *Engineering Applications of Artificial Intelligence*, 82, 148-174. DOI: **TO BE VERIFIED**.
+### 28.1 Critical Open Questions (Must Be Resolved Before M1 Implementation)
 
-2. [Source Smart Farming Paper — TO BE VERIFIED]. Smart Farming with Sooty Tern Optimization based LS-HGNet Classification Model. Authors, Year, Venue, DOI — to be located during M1.
+1. **STOA Mathematical Formulation:** Primary source verification of exact collision-avoidance coefficient schedule ($S_A = 2 - 2t/T_{max}$ vs. alternatives), spiral parameters ($\rho$ calculation and boundary stabilization), and position-update equation from Dhiman & Kaur (2019).
+2. **Source LS-HGNet Architectural Parameters:** Primary source verification of channel progression, block topologies, and stem structure from Krishnan et al. (2024).
+3. **Data Split & Augmentation Protocol:** Stratified 70/15/15 split confirmed; vertical flip excluded from default pipeline (retained strictly as optional ablation ABL-05).
+
+### 28.2 Non-Critical Open Questions (May Be Experimentally Resolved in M1/M2)
+
+4. **PlantVillage Exact Per-Class Counts:** Inspect downloaded dataset files in M1 and compute verified class distribution.
+5. **PlantVillage Licensing Terms:** Inspect dataset repository README/LICENSE upon download in M1.
+6. **Hardware Memory Feasibility:** Confirm whether 224x224 at batch size 32 fits 16 GB RAM via memory profiling during M1 (adjust to batch size 16 if needed).
+7. **Loss Function Class Weighting:** Measure class imbalance on disk and test if weighted Cross-Entropy improves validation macro F1 (ablation ABL-02 in M2).
+8. **Dropout Rate Tuning:** Explored dynamically within STO search space [0.0, 0.5].
+9. **Optional Edge Deployment Latency:** Benchmark inference latency during optional deployment phase OBJ-11.
+
+### 28.3 Resolved in M0 Correction Pass
+
+- **RES-01:** STOA author attribution corrected to Gaurav Dhiman and Amandeep Kaur (2019), *EAAI*, 82, 148–174, DOI: 10.1016/j.engappai.2019.03.021.
+- **RES-02:** Source smart-farming paper citation confirmed: Krishnan et al. (2024), *IJERR*, 37(spl), 96–108, DOI: 10.52756/ijerr.2024.v37spl.008.
+- **RES-03:** Scope and originality boundary confirmed: Source paper addresses UAV maize tassel detection; our project is an adaptation for tomato leaf disease classification.
+- **RES-04:** Vertical flip contradiction resolved: removed from default configuration; documented strictly as optional ablation.
+
+---
+
+## 29. References
+
+1. Dhiman, G., & Kaur, A. (2019). STOA: A bio-inspired based optimization algorithm for industrial engineering problems. *Engineering Applications of Artificial Intelligence*, 82, 148–174. DOI: 10.1016/j.engappai.2019.03.021.
+
+2. Krishnan, V. G., Vikranth, B., Sumithra, M., Laxmi, B. P., & Gowri, B. S. (2024). Smart Farming with Sooty Tern Optimization based LS-HGNet Classification Model. *International Journal of Experimental Research and Review*, 37(spl), 96–108. DOI: 10.52756/ijerr.2024.v37spl.008.
 
 3. Newell, A., Yang, K., & Deng, J. (2016). Stacked hourglass networks for human pose estimation. *ECCV*, pp. 483-499. arXiv:1603.06937.
 
@@ -761,4 +804,4 @@ The following limitations must appear in all final reports and presentations:
 
 ---
 
-*End of Research Specification — M0 Draft — Status: AWAITING APPROVAL*
+*End of Research Specification — M0 Research Lock — Status: NOT READY — CRITICAL VERIFICATION REMAINS*

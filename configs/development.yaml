@@ -1,6 +1,6 @@
 # AgriAI — Development Configuration
 # Adaptive Smart Farming Framework using STO-Optimized LS-HGNet
-# M0 Frozen Configuration — Development Phase
+# M0 Research Lock — Pending Final Verification (Development Phase)
 
 # ─────────────────────────────────────────────────────────
 # EXPERIMENT IDENTITY
@@ -46,7 +46,7 @@ preprocessing:
 augmentation:
   train:
     random_horizontal_flip: 0.5
-    random_vertical_flip: 0.5
+    random_vertical_flip: 0.0   # Disabled: vertical flip excluded from default pipeline; optional ablation only
     random_rotation_degrees: 30
     color_jitter:
       brightness: 0.3
@@ -128,9 +128,9 @@ stoa:
   fitness: "1_minus_macro_f1"   # Minimization objective
   fitness_data: "validation"    # NEVER test set
 
-  # STOA parameters (to be verified against Dhiman & Kumar 2019 in M1)
-  # C_f decreases from 2 to (2 - t/T_max) — DISCREPANCY: some sources show 2 - 2*(t/T_max)
-  # Exact formulation MUST be verified from primary paper
+  # STOA parameters (to be verified against Dhiman & Kaur 2019 in M1)
+  # C_f decreases from 2 to (2 - 2t/T_max) — Primary paper formulation verification required
+  # Exact formulation MUST be verified from primary paper before M1 implementation
   boundary_handling: "clip"     # Engineering Decision
 
 # ─────────────────────────────────────────────────────────

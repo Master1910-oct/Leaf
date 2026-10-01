@@ -5,9 +5,10 @@
 
 ---
 
-## Project Status: M0 — AWAITING APPROVAL
+## Project Status: M0 Research Lock — Pending Final Verification
 
-This repository is at the **M0 Research Lock** milestone. No implementation code has been written. The M0 documents require explicit approval before M1 (dataset discovery and implementation) begins.
+**Status: NOT READY — CRITICAL VERIFICATION REMAINS**  
+Critical verification remains for the exact primary-source STOA mathematical formulation and source LS-HGNet architectural specifications. Implementation code must NOT begin until M0 is verified and explicitly approved.
 
 ---
 
@@ -56,10 +57,10 @@ Implementation directories (src/, data/, experiments/, models/, frontend/, api/)
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| [docs/research_spec.md](docs/research_spec.md) | Complete research specification | M0 Draft |
-| [docs/architecture_decisions.md](docs/architecture_decisions.md) | All engineering decision records | M0 Draft |
-| [configs/development.yaml](configs/development.yaml) | Development phase configuration | Frozen |
-| [configs/final.yaml](configs/final.yaml) | Final experiment configuration | Frozen |
+| [docs/research_spec.md](docs/research_spec.md) | Complete research specification | M0 Draft — Pending Final Verification |
+| [docs/architecture_decisions.md](docs/architecture_decisions.md) | All engineering decision records | M0 Draft — Pending Final Verification |
+| [configs/development.yaml](configs/development.yaml) | Development phase configuration | Pending Final Verification |
+| [configs/final.yaml](configs/final.yaml) | Final experiment configuration | Pending Final Verification |
 
 ---
 
@@ -100,13 +101,17 @@ Implementation directories (src/, data/, experiments/, models/, frontend/, api/)
 
 ---
 
-## Open Questions Before M1
+## Open Questions
 
-1. Exact STOA C_f coefficient range (2->1 vs. 2->0) — must read Dhiman & Kumar (2019).
-2. Source smart-farming paper exact citation — literature search needed.
-3. PlantVillage tomato per-class exact image counts — verify after download.
-4. PlantVillage license — verify from dataset README.
-5. Whether 224x224 at batch 32 fits 16 GB RAM — memory profiling in M1.
+### Critical — Must Be Resolved Before M1 Implementation
+1. **STOA mathematical formulation:** Primary source verification of exact collision-avoidance coefficient schedule ($S_A = 2 - 2t/T_{max}$ vs. alternatives), spiral parameters ($\rho$ calculation and boundary stabilization), and position-update equation from Dhiman & Kaur (2019).
+2. **Source LS-HGNet architectural parameters:** Verification of channel progression, block topologies, and stem structure from the primary smart-farming paper.
+3. **Data split & augmentation protocol:** Stratified 70/15/15 split confirmed; vertical flip excluded from default pipeline (retained only as optional ablation).
+
+### Non-Critical — Experimentally Resolved in M1/M2
+4. **PlantVillage exact per-class counts & licensing:** Inspect physical image files and license documentation upon download in M1.
+5. **Hardware memory feasibility:** Confirm whether 224x224 at batch 32 fits within 16 GB RAM via memory profiling during M1.
+6. **Loss function class weighting:** Measure class imbalance on disk and test if weighted Cross-Entropy improves macro F1 over standard CE.
 
 ---
 
@@ -122,17 +127,18 @@ Implementation directories (src/, data/, experiments/, models/, frontend/, api/)
 
 ## References
 
-1. Dhiman, G., & Kumar, V. (2019). STOA. *Engineering Applications of Artificial Intelligence*, 82.
-2. Newell, A., Yang, K., & Deng, J. (2016). Stacked Hourglass Networks. *ECCV*. arXiv:1603.06937.
-3. Hughes, D. P., & Salathé, M. (2015). PlantVillage. arXiv:1511.08060.
-4. Howard, A. G., et al. (2017). MobileNets. arXiv:1704.04861.
-5. Selvaraju, R. R., et al. (2017). Grad-CAM. *ICCV*. DOI:10.1109/ICCV.2017.74.
-6. Guo, C., et al. (2017). On Calibration of Modern Neural Networks. *ICML*.
-7. He, K., et al. (2016). Deep Residual Learning. *CVPR*.
-8. Yu, F., & Koltun, V. (2016). Multi-scale Context Aggregation. *ICLR*. arXiv:1511.07122.
+1. Dhiman, G., & Kaur, A. (2019). STOA: A bio-inspired based optimization algorithm for industrial engineering problems. *Engineering Applications of Artificial Intelligence*, 82, 148–174. DOI: 10.1016/j.engappai.2019.03.021.
+2. Krishnan, V. G., Vikranth, B., Sumithra, M., Laxmi, B. P., & Gowri, B. S. (2024). Smart Farming with Sooty Tern Optimization based LS-HGNet Classification Model. *International Journal of Experimental Research and Review*, 37(spl), 96–108. DOI: 10.52756/ijerr.2024.v37spl.008.
+3. Newell, A., Yang, K., & Deng, J. (2016). Stacked Hourglass Networks for Human Pose Estimation. *ECCV*. arXiv:1603.06937.
+4. Hughes, D. P., & Salathé, M. (2015). An open access repository of images on plant health to enable the development of mobile disease diagnostics. arXiv:1511.08060.
+5. Howard, A. G., et al. (2017). MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications. arXiv:1704.04861.
+6. Selvaraju, R. R., et al. (2017). Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization. *ICCV*. DOI: 10.1109/ICCV.2017.74.
+7. Guo, C., et al. (2017). On Calibration of Modern Neural Networks. *ICML*.
+8. He, K., et al. (2016). Deep Residual Learning for Image Recognition. *CVPR*.
+9. Yu, F., & Koltun, V. (2016). Multi-scale Context Aggregation by Dilated Convolutions. *ICLR*. arXiv:1511.07122.
 
 Full references with complete citations are in [docs/research_spec.md](docs/research_spec.md).
 
 ---
 
-*M0 Research Lock — 2026-10-01 — Status: AWAITING APPROVAL*
+*M0 Research Lock — 2026-10-01 — Status: NOT READY — CRITICAL VERIFICATION REMAINS*
