@@ -1,0 +1,107 @@
+{
+  "experiment": "m6_proxy_fidelity",
+  "num_configs": 5,
+  "proxy_protocol": {
+    "epochs": 3,
+    "image_size": 128
+  },
+  "long_protocol": {
+    "epochs": 5,
+    "image_size": 128
+  },
+  "spearman_rank_correlation": 0.9999999999999999,
+  "p_value": 1.4042654220543608e-24,
+  "results": [
+    {
+      "config_id": 1,
+      "learning_rate": 0.001667968558662278,
+      "weight_decay": 3.398336356964996e-05,
+      "dropout": 0.3000352627245011,
+      "batch_size": 64,
+      "proxy_epochs": 3,
+      "proxy_val_macro_f1": 0.07709999999999995,
+      "proxy_val_loss": 5.0791,
+      "proxy_val_accuracy": 0.3073,
+      "proxy_time_s": 214.19117949999782,
+      "long_epochs": 5,
+      "long_val_macro_f1": 0.08579999999999999,
+      "long_val_loss": 5.2501,
+      "long_val_accuracy": 0.301,
+      "long_time_s": 461.6950192000004
+    },
+    {
+      "config_id": 2,
+      "learning_rate": 0.0002467886173653912,
+      "weight_decay": 2.2292854806213785e-05,
+      "dropout": 0.28423749100733053,
+      "batch_size": 32,
+      "proxy_epochs": 3,
+      "proxy_val_macro_f1": 0.09220000000000006,
+      "proxy_val_loss": 3.3087,
+      "proxy_val_accuracy": 0.1689,
+      "proxy_time_s": 266.8892201999988,
+      "long_epochs": 5,
+      "long_val_macro_f1": 0.1412,
+      "long_val_loss": 2.8085,
+      "long_val_accuracy": 0.3561,
+      "long_time_s": 444.25595220000105
+    },
+    {
+      "config_id": 3,
+      "learning_rate": 0.002965492651977451,
+      "weight_decay": 5.287802237034699e-05,
+      "dropout": 0.028763455332508958,
+      "batch_size": 16,
+      "proxy_epochs": 3,
+      "proxy_val_macro_f1": 0.15159999999999996,
+      "proxy_val_loss": 3.0799,
+      "proxy_val_accuracy": 0.3458,
+      "proxy_time_s": 279.7621306000001,
+      "long_epochs": 5,
+      "long_val_macro_f1": 0.2849999999999999,
+      "long_val_loss": 1.9867,
+      "long_val_accuracy": 0.4637,
+      "long_time_s": 466.8913618000006
+    },
+    {
+      "config_id": 4,
+      "learning_rate": 0.00327200178519653,
+      "weight_decay": 0.0005245107714658189,
+      "dropout": 0.3507644856035165,
+      "batch_size": 16,
+      "proxy_epochs": 3,
+      "proxy_val_macro_f1": 0.23370000000000002,
+      "proxy_val_loss": 2.835,
+      "proxy_val_accuracy": 0.4273,
+      "proxy_time_s": 278.12968580000233,
+      "long_epochs": 5,
+      "long_val_macro_f1": 0.2894,
+      "long_val_loss": 2.3432,
+      "long_val_accuracy": 0.4336,
+      "long_time_s": 459.7428906999994
+    },
+    {
+      "config_id": 5,
+      "learning_rate": 0.00012382916801977577,
+      "weight_decay": 0.005341014194990032,
+      "dropout": 0.21083968477311638,
+      "batch_size": 16,
+      "proxy_epochs": 3,
+      "proxy_val_macro_f1": 0.07930000000000004,
+      "proxy_val_loss": 8.2546,
+      "proxy_val_accuracy": 0.0943,
+      "proxy_time_s": 280.40445610000097,
+      "long_epochs": 5,
+      "long_val_macro_f1": 0.133,
+      "long_val_loss": 5.7546,
+      "long_val_accuracy": 0.1461,
+      "long_time_s": 460.4121567999973
+    }
+  ],
+  "interpretation": "Observed Spearman rho = 1.0000 (p = 0.0000) between 3-epoch proxy and 5-epoch reference training over 5 configurations. Note that a small sample size provides empirical indication rather than definitive proof of proxy fidelity.",
+  "limitations": [
+    "Evaluated on a sample of configurations due to CPU compute constraints.",
+    "Proxy fidelity may vary between extreme configurations and near-optimal configurations.",
+    "Validation Macro-F1 ranking is an empirical heuristic, not a guarantee of monotonic rank preservation."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "candidate_id": "candidate_a_default",
+  "architecture": "LS-HGNet (fixed M4)",
+  "source": "Reused from M4 final training (results/ls_hgnet_final/)",
+  "seed": 42,
+  "image_size": 224,
+  "epochs_trained": 5,
+  "best_epoch": 5,
+  "device": "cpu",
+  "hyperparameters": {
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.3,
+    "batch_size": 32
+  },
+  "model_parameters": {
+    "base_channels": 64,
+    "num_stacks": 3,
+    "encoder_levels": 4,
+    "dilation_rates": [1, 2, 4],
+    "total_parameters": 8041354,
+    "checkpoint_size_mb": 92.7719
+  },
+  "validation_metrics": {
+    "accuracy": 0.910793,
+    "macro_precision": 0.895255,
+    "macro_recall": 0.886605,
+    "macro_f1": 0.881642
+  },
+  "computational_metrics": {
+    "total_parameters": 8041354,
+    "checkpoint_size_mb": 92.7719,
+    "median_inference_latency_ms": 54.779,
+    "mean_inference_latency_ms": 53.997
+  },
+  "dataset_split": {
+    "train_samples": 12712,
+    "val_samples": 2724,
+    "test_samples": "2,724 (STRICTLY ISOLATED — not accessed in this script)"
+  },
+  "total_training_runtime_s": 11231.53
+}

@@ -1,0 +1,106 @@
+{
+  "dataset_name": "PlantVillage Tomato Disease Subset",
+  "dataset_source": "Hughes, D. P., & Salathe, M. (2015) via spMohanty/PlantVillage-Dataset",
+  "license": "CC0 1.0 Universal (Public Domain Dedication)",
+  "citation": "Hughes, D. P., & Salathe, M. (2015). An open access repository of images on plant health to enable the development of mobile disease diagnostics through machine learning and crowdsourcing. arXiv:1511.08060.",
+  "verified_classes_count": 10,
+  "classes": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___Septoria_leaf_spot",
+    "Tomato___Spider_mites Two-spotted_spider_mite",
+    "Tomato___Target_Spot",
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato___Tomato_mosaic_virus",
+    "Tomato___healthy"
+  ],
+  "total_images": 18160,
+  "per_class_counts": {
+    "Tomato___Bacterial_spot": 2127,
+    "Tomato___Early_blight": 1000,
+    "Tomato___Late_blight": 1909,
+    "Tomato___Leaf_Mold": 952,
+    "Tomato___Septoria_leaf_spot": 1771,
+    "Tomato___Spider_mites Two-spotted_spider_mite": 1676,
+    "Tomato___Target_Spot": 1404,
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus": 5357,
+    "Tomato___Tomato_mosaic_virus": 373,
+    "Tomato___healthy": 1591
+  },
+  "class_imbalance_ratio": 14.36,
+  "splits": {
+    "strategy": "Stratified random split",
+    "seed": 42,
+    "train_ratio": 0.7,
+    "val_ratio": 0.15,
+    "test_ratio": 0.15,
+    "train_count": 12712,
+    "val_count": 2724,
+    "test_count": 2724,
+    "train_manifest": "data/train.csv",
+    "val_manifest": "data/val.csv",
+    "test_manifest": "data/test.csv"
+  },
+  "preprocessing_pipeline": {
+    "resolutions": {
+      "development": [
+        128,
+        128
+      ],
+      "final": [
+        224,
+        224
+      ]
+    },
+    "color_space": "RGB",
+    "normalization": {
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "standard": "ImageNet"
+    },
+    "augmentation_policy": {
+      "train_only": true,
+      "horizontal_flip": {
+        "probability": 0.5
+      },
+      "rotation": {
+        "degrees": 30,
+        "probability": 0.5
+      },
+      "color_jitter": {
+        "brightness": 0.3,
+        "contrast": 0.3,
+        "saturation": 0.3,
+        "hue": 0.1
+      },
+      "resized_crop": {
+        "scale": [
+          0.7,
+          1.0
+        ]
+      },
+      "vertical_flip": {
+        "default": false,
+        "note": "Deliberately excluded in base pipeline to preserve biological foliar orientation; available strictly as ablation ABL-05"
+      }
+    },
+    "eval_policy": {
+      "deterministic": true,
+      "augmentations": false
+    }
+  },
+  "integrity": {
+    "corrupt_files_count": 0,
+    "verification_status": "VERIFIED"
+  }
+}

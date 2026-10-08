@@ -1,6 +1,6 @@
 # AgriAI — Development Configuration
 # Adaptive Smart Farming Framework using STO-Optimized LS-HGNet
-# M0 Research Lock — Pending Final Verification (Development Phase)
+# M0 Research Specification — LOCKED (Development Phase)
 
 # ─────────────────────────────────────────────────────────
 # EXPERIMENT IDENTITY
@@ -81,8 +81,10 @@ model:
 baseline:
   architecture: "BaselineCNN"
   target_params: 500000   # Approximately 500K parameters
-  num_blocks: 3
-  channels: [32, 64, 128]
+  num_blocks: 4
+  channels: [32, 64, 128, 256]
+  fc_dim: 256
+  dropout: 0.2
 
 # ─────────────────────────────────────────────────────────
 # TRAINING — Default Hyperparameters
@@ -100,13 +102,26 @@ training:
   loss: "cross_entropy"   # Weighted CE if class imbalance confirmed in M1
 
 # ─────────────────────────────────────────────────────────
-# STO HYPERPARAMETER OPTIMIZATION
+# HYPERPARAMETER OPTIMIZATION (STOA & Controls)
 # ─────────────────────────────────────────────────────────
+optimizer:
+  name: "stoa"
+  # The default optimizer is a project-modified stabilized STOA variant.
+  # Supported variants:
+  #   - "stabilized"       : Project-modified stabilized/additive STOA variant (Default)
+  #   - "original_strict"  : Faithful source-derived STOA replication (Ablation / Stability study)
+  variant: "stabilized"
+
 stoa:
   # Development budget (Engineering Decision — see architecture_decisions.md)
   num_agents: 5
   num_iterations: 5
   total_evaluations: 25   # = num_agents * num_iterations
+
+  # Supported variants: "stabilized" (default, project modification), "original_strict" (faithful source replication)
+  variant: "stabilized"   # The default optimizer is a project-modified stabilized STOA variant
+  damping_factor: 0.1     # Project modification: damped spiral radius to prevent exponential divergence
+  boundary_handling: "clip" # Clamping to valid hyperparameter bounds [lb, ub]
 
   search_space:
     learning_rate:
@@ -127,11 +142,6 @@ stoa:
 
   fitness: "1_minus_macro_f1"   # Minimization objective
   fitness_data: "validation"    # NEVER test set
-
-  # STOA parameters (to be verified against Dhiman & Kaur 2019 in M1)
-  # C_f decreases from 2 to (2 - 2t/T_max) — Primary paper formulation verification required
-  # Exact formulation MUST be verified from primary paper before M1 implementation
-  boundary_handling: "clip"     # Engineering Decision
 
 # ─────────────────────────────────────────────────────────
 # RANDOM SEARCH (Equal Budget)

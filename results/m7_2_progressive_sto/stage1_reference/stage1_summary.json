@@ -1,0 +1,16 @@
+{
+  "milestone": "M7.1 Rapid STO Screening",
+  "training_subset": "20% stratified",
+  "sample_count": 2542,
+  "total_candidates": 8,
+  "epochs_per_candidate": 2,
+  "best_candidate_id": 5,
+  "best_validation_macro_f1": 0.539,
+  "best_hyperparameters": {
+    "learning_rate": 0.00016861568540441394,
+    "weight_decay": 0.0004701143062247067,
+    "dropout": 0.4932374589443499,
+    "batch_size": 32
+  },
+  "default_baseline_val_macro_f1": 0.8816
+}

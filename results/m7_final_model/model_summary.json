@@ -1,0 +1,21 @@
+{
+  "architecture": "LS-HGNet",
+  "parameters": {
+    "total_parameters": 8041354,
+    "trainable_parameters": 8041354,
+    "base_channels": 64,
+    "num_stacks": 3,
+    "encoder_levels": 4,
+    "dilation_rates": [
+      1,
+      2,
+      4
+    ],
+    "dropout": 0.3,
+    "num_classes": 10
+  },
+  "checkpoint_size_mb": 92.7719,
+  "selected_candidate_id": "candidate_a_default",
+  "source_checkpoint": "results\\m7_final_selection\\candidate_a_default\\best_model.pt",
+  "locked_at_epoch": 5
+}

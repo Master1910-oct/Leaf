@@ -1,0 +1,101 @@
+{
+  "experiment": "AgriAI M7 Final LS-HGNet Independent Test Evaluation",
+  "selected_candidate_id": "candidate_a_default",
+  "dataset_split": {
+    "test_samples": 2724,
+    "num_classes": 10,
+    "image_size": [
+      224,
+      224
+    ]
+  },
+  "hyperparameters": {
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.3,
+    "batch_size": 32
+  },
+  "test_metrics": {
+    "accuracy": 0.907122,
+    "macro_precision": 0.893473,
+    "macro_recall": 0.875916,
+    "macro_f1": 0.873981
+  },
+  "per_class_metrics": {
+    "Tomato___Bacterial_spot": {
+      "precision": 0.949,
+      "recall": 0.8746,
+      "f1_score": 0.9103,
+      "support": 319.0
+    },
+    "Tomato___Early_blight": {
+      "precision": 0.9231,
+      "recall": 0.64,
+      "f1_score": 0.7559,
+      "support": 150.0
+    },
+    "Tomato___Late_blight": {
+      "precision": 0.9136,
+      "recall": 0.9615,
+      "f1_score": 0.937,
+      "support": 286.0
+    },
+    "Tomato___Leaf_Mold": {
+      "precision": 0.9389,
+      "recall": 0.8601,
+      "f1_score": 0.8978,
+      "support": 143.0
+    },
+    "Tomato___Septoria_leaf_spot": {
+      "precision": 0.8424,
+      "recall": 0.9887,
+      "f1_score": 0.9097,
+      "support": 265.0
+    },
+    "Tomato___Spider_mites Two-spotted_spider_mite": {
+      "precision": 0.6977,
+      "recall": 0.9802,
+      "f1_score": 0.8152,
+      "support": 252.0
+    },
+    "Tomato___Target_Spot": {
+      "precision": 0.8992,
+      "recall": 0.5498,
+      "f1_score": 0.6824,
+      "support": 211.0
+    },
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+      "precision": 0.9887,
+      "recall": 0.9789,
+      "f1_score": 0.9838,
+      "support": 804.0
+    },
+    "Tomato___Tomato_mosaic_virus": {
+      "precision": 0.803,
+      "recall": 0.9464,
+      "f1_score": 0.8689,
+      "support": 56.0
+    },
+    "Tomato___healthy": {
+      "precision": 0.979,
+      "recall": 0.979,
+      "f1_score": 0.979,
+      "support": 238.0
+    }
+  },
+  "computational_metrics": {
+    "total_parameters": 8041354,
+    "checkpoint_size_mb": 92.7719,
+    "median_inference_latency_ms": 51.0939,
+    "mean_inference_latency_ms": 60.7379,
+    "std_inference_latency_ms": 21.9425
+  },
+  "reproducibility": {
+    "seed": 42,
+    "device": "cpu",
+    "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "torch_version": "2.2.2+cpu",
+    "numpy_version": "1.26.4"
+  },
+  "isolation_verified": "Test set accessed exactly once after selection was frozen."
+}

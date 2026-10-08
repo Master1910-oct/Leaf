@@ -1,0 +1,24 @@
+{
+  "method": "Temperature Scaling",
+  "learned_temperature": 1.155830979347229,
+  "calibration_subset_size": 1362,
+  "holdout_subset_size": 1362,
+  "seed": 42,
+  "before": {
+    "accuracy": 96.1087,
+    "nll": 0.122237,
+    "brier": 0.060023,
+    "ece": 0.01343,
+    "mean_confidence": 95.8738,
+    "temperature": 1.0
+  },
+  "after": {
+    "accuracy": 96.1087,
+    "nll": 0.124716,
+    "brier": 0.060751,
+    "ece": 0.017325,
+    "mean_confidence": 94.8919,
+    "temperature": 1.155830979347229
+  },
+  "note": "Temperature fitted on calibration subset; evaluated on holdout. Model weights unchanged."
+}

@@ -1,0 +1,20 @@
+{
+  "experiment": "M9 -- Final Locked-Test Evaluation",
+  "evaluation_timestamp": "2026-10-08T10:37:51.969236Z",
+  "test_csv_path": "D:\\Leaf\\data\\test.csv",
+  "test_samples_count": 2724,
+  "checkpoint_path": "D:\\Leaf\\results\\m7_3_full_training\\checkpoints\\best_model.pt",
+  "checkpoint_sha256": "4E4145378F2DE852AB7EABE1E72FE7AE7AFA31F608E0F0E246E06C41A7F098A8",
+  "total_parameters": 8041354,
+  "architecture": "LS-HGNet",
+  "preprocessing": {
+    "resolution": "224x224",
+    "normalization": "ImageNet (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])",
+    "augmentations": "NONE (Deterministic)"
+  },
+  "model_weight_modification_status": "NONE (Evaluated under torch.no_grad, eval mode)",
+  "threshold_tuning_status": "NONE (Standard argmax across all classes)",
+  "calibration_fitting_status": "NONE (Frozen T=1.155831 from M8.2 validation used strictly for probability reporting)",
+  "number_of_test_evaluation_passes": 1,
+  "governance_certification": "Test data was used exclusively for final evaluation. No training, fine-tuning, hyperparameter tuning, threshold optimization, model selection, or calibration fitting was performed using test data or test labels."
+}

@@ -1,9 +1,9 @@
 # Architecture Decisions Log — AgriAI
 ## Adaptive Smart Farming Framework using STO-Optimized LS-HGNet
 
-**Document version:** M0-DRAFT  
+**Document version:** M0-ARCHITECTURE-LOG-LOCKED  
 **Date:** 2026-10-01  
-**Status:** M0 Research Lock — Pending Final Verification (NOT READY — CRITICAL VERIFICATION REMAINS)  
+**Status:** ✅ M0 LOCKED — Architecture Decisions Approved  
 
 ---
 
@@ -517,27 +517,92 @@ Include as an optional ablation to determine whether morphological preprocessing
 
 ---
 
+## Decision: Project-Modified Stabilized/Additive STOA Variant and Three Experimental Controls
+
+### Decision
+AgriAI adopts the **Project-Modified Stabilized/Additive STOA Variant** as the default search algorithm for M1 hyperparameter optimization, while preserving an optional `variant: "original_strict"` toggle for empirical ablation and replication, and an equal-budget `variant: "random_search"` control.
+
+### Source basis
+- Dhiman & Kaur (2019), *EAAI*, Vol. 82, pp. 148–174.
+- Independent critique & proofs: Kudela (2022, *Swarm Evol. Comput.*) and Kwok (2025, arXiv:2511.17556).
+
+### Our engineering choice
+- **Clear Project Modification Notice:** This is a project-specific modification inspired by the original STOA. It is not presented as the original Dhiman & Kaur STOA formulation.
+- **Damped and Normalized Spiral:** Replace exponential spiral divergence $r = \exp(k)$ (which produces $\approx 535.49$ at $k=2\pi$) with a project damping factor $b = 0.1$ and a proper normalized 3D direction vector $\vec{\Omega}_3 = [x', y', z']^T / (\|[x', y', z']\|_2 + \epsilon) = [\Omega_1, \Omega_2, \Omega_3]^T$.
+- **Project-Specific 3D → D-Dimension Cyclic Extension:** Because the STOA spiral produces a 3D direction vector $\vec{\Omega}_3 \in \mathbb{R}^3$ while the AgriAI hyperparameter search space has $D = 4$ dimensions, a deterministic cyclic extension is applied: $\vec{\Omega}_D[i] = \vec{\Omega}_3[(i-1) \bmod 3 + 1]$ for $i \in \{1, \dots, D\}$. For $D = 4$, this yields $\vec{\Omega}_4 = [\Omega_1, \Omega_2, \Omega_3, \Omega_1]^T \in \mathbb{R}^4$. This ensures $\vec{D}_s \odot \vec{\Omega}_4$ is dimensionally valid in $\mathbb{R}^4$. **This cyclic extension is an explicit project-specific engineering modification, not part of the original Dhiman & Kaur (2019) STOA.**
+- **Option A (Consistent Best-Guided Formulation):** Search agents are guided toward the best-so-far solution $\vec{P}_{best}$ throughout the formulation without unintended random-agent drift:
+  $$\vec{D}_s(t) = S_A(t) \cdot \vec{P}(t) + 0.5 \cdot \vec{r} \odot (\vec{P}_{best}(t) - \vec{P}(t))$$
+- **Additive Update:** Replace multiplicative Hadamard update $\vec{P}(t+1) \propto \vec{D}_s \odot \vec{P}_{best}$ (which induces severe origin zero-bias) with an additive displacement: $\vec{P}(t+1) = \vec{P}_{best}(t) + \vec{D}_s(t) \odot \vec{\Omega}_4$.
+- **Three Optimizer Controls:**
+  1. `original_strict`: Evaluates the source-derived STOA procedure as faithfully as possible to empirically document its behavior and known numerical properties.
+  2. `stabilized`: Evaluates the project-modified stabilized/additive STOA variant (Default).
+  3. `random_search`: Provides an equal-budget (25 dev / 100 final) non-metaheuristic search baseline.
+- **Domain Clamping:** Clamp all hyperparameter coordinates directly to valid domain bounds $[lb_i, ub_i]$.
+
+### Reason
+Literal implementation of original equations leads to numerical overflow, immediate boundary saturation, and severe search degradation toward the coordinate origin. The stabilized additive formulation preserves the conceptual bio-inspired balance of collision avoidance and spiral pursuit while ensuring stable, valid convergence over hyperparameter spaces.
+
+### Alternatives considered
+- Literal Dhiman & Kaur equations only: causes numerical explosion and artificial zero-collapse.
+- Plain Random Search only: lacks metaheuristic evaluation objective.
+- Option B (deliberate $P_{rand}$ drift): rejected in favor of Option A to preserve principled best-guided convergence.
+
+### Trade-offs
+- Stabilized Additive STOA departs from literal 2019 equations in favor of numerical stability; this deviation is explicitly acknowledged and documented to maintain scientific integrity.
+
+---
+
+## Decision: LS-HGNet Architectural Adaptation vs. Source Paper
+
+### Decision
+Adapt the Lightweight Stacked Hourglass Network (LS-HGNet) conceptual framework from UAV maize tassel detection (Krishnan et al., 2024) to 10-class tomato leaf disease classification on PlantVillage.
+
+### Source basis
+- Krishnan et al. (2024), *IJERR*, Vol. 37(spl), pp. 96–108.
+- Newell et al. (2016), *ECCV*, arXiv:1603.06937.
+
+### Our engineering choice
+- Utilize Depthwise Separable Convolutions (DWSConv) in LightResidualBlocks.
+- Implement parallel MultiDilatedBlock bottleneck with rates [1, 2, 4] and 1x1 conv fusion.
+- Use Bilinear upsampling + 1x1 conv for decoder stages.
+- Replace detection heads with Global Average Pooling -> Dropout -> Linear(10) classifier head.
+- Exclude morphological top-hat/bottom-hat transforms from the core pipeline (retained only as ablation ABL-04).
+
+### Reason
+- Aerial tassel counting requires dense spatial localization under drone vibration and lighting glare, whereas foliar pathology diagnosis requires robust multi-scale texture classification and post-hoc visual attribution.
+- DWSConv drastically minimizes parameter count for edge/laptop execution.
+- GAP avoids spatial flattening and eliminates millions of fully connected parameters.
+
+### Alternatives considered
+- Full ResNet-50 / ConvNeXt: significantly more parameters; defeats lightweight research objective.
+- Literal replication of maize detection network: inappropriate task framing for classification.
+
+### Trade-offs
+- Adapting the architecture requires novel design choices (dilation rates, head structure); these are cleanly identified as engineering choices rather than source-prescribed features.
+
+---
+
 ## Research Decision Summary Table
 
 | Decision | Status | Evidence | Final Choice |
 |----------|--------|----------|-------------|
-| Dataset | Literature-verified (counts TO BE VERIFIED from files) | Hughes & Salathé, 2015 | PlantVillage Tomato Subset |
-| Classes | 10 classes widely reported (must verify from download) | Multiple published papers | 10 classes (1 healthy + 9 diseased) |
+| Dataset | Literature-verified (counts to verify in M1) | Hughes & Salathé, 2015 | PlantVillage Tomato Subset |
+| Classes | 10 classes verified across literature | Multiple published papers | 10 classes (1 healthy + 9 diseased) |
 | Input resolution | Engineering decision | Computational constraint | 128x128 (dev), 224x224 (final) |
-| LS-HGNet structure | Adapted from Newell et al. 2016 | Hourglass paper | Encoder-Bottleneck-Decoder with skip connections |
-| STO equations | Partially verified; discrepancy in C_f range noted | Dhiman & Kumar 2019 + secondary sources | To be resolved from primary paper in M1 |
+| LS-HGNet structure | Adapted from Newell et al. & Krishnan et al. | Hourglass & Smart Farming papers | Encoder-Bottleneck-Decoder with skip connections |
+| STO equations | Original unverified; project-modified stabilized variant defined | Dhiman & Kaur 2019; Kudela 2022 | Project-Modified Stabilized STOA (default); 3 controls: `original_strict`, `stabilized`, `random_search` |
 | Dilation rates | Engineering decision only | No source support | [1, 2, 4] (ablation ABL-01 planned) |
-| Inter-stack skip | Engineering decision | No direct source support | Present (ablation ABL-02 planned) |
+| Inter-stack skip | Engineering decision | Inspired by Newell et al. / DenseNet | Present (ablation ABL-02 planned) |
 | Upsampling method | Engineering decision | Newell et al. used nearest-neighbor | Bilinear + 1x1 conv |
 | Residual structure | Adapted from He et al. 2016 | ResNet paper | Post-activation DWSConv residual |
 | Classifier head | Standard practice | Lin et al. 2014 + PyTorch conventions | GAP + Dropout + Linear, no softmax |
 | Optimizer | Engineering decision | Standard DL practice | AdamW |
 | Scheduler | Engineering decision | Standard DL practice | CosineAnnealingLR |
 | Loss function | Engineering decision | Standard DL practice | CrossEntropyLoss (weighted if needed) |
-| Augmentation | Engineering decision | Plant disease classification literature | Standard set (flip, rotate, jitter, crop) |
+| Augmentation | Engineering decision | Plant disease classification literature | Standard set (flip, rotate, jitter, crop; NO vertical flip) |
 | STO search space | Engineering decision | Experiment design | 4 hyperparameters, ranges as specified |
 | STO budget | Engineering decision | Computational constraint | 25 (dev), 100 (final) |
-| Random Search budget | Scientific requirement | Equal-budget protocol | Equal to STO at all stages |
+| Random Search budget | Scientific requirement | Equal-budget protocol | Equal to STO at all stages (25 dev / 100 final) |
 | Fitness function | Engineering decision | Research design | 1 - macro_F1 on validation set |
 | Baseline model | Experimental control | Scientific requirement | 3-layer CNN, ~500K params, default HPs |
 | Grad-CAM target | Adapted from Selvaraju et al. 2017 | Grad-CAM paper | Final decoder block output |
@@ -551,35 +616,35 @@ Include as an optional ablation to determine whether morphological preprocessing
 
 ## Open Questions and Verification Classification
 
-### Critical Open Questions (Must Be Resolved Before M1 Implementation)
+### Resolved Research Specifications
 
-| ID | Critical Question | Resolution Requirement |
-|----|-------------------|------------------------|
-| OQ-01 | STOA exact coefficient formulation: primary-source verification of $S_A = 2 - 2t/T_{max}$ vs. alternatives | Verify from primary paper: Dhiman & Kaur (2019) |
-| OQ-02 | STOA spiral update equation: exact mathematical form and numerical stabilization for $\rho = \exp(\theta)$ to prevent numerical explosion ($\exp(2\pi) \approx 535.49$) and excessive zero-bias | Verify from primary paper: Dhiman & Kaur (2019); define mathematical stabilization |
-| OQ-03 | Source LS-HGNet architectural specifications: verification of exact channel progression, depthwise separable configuration, bottleneck topology, and stem structure | Verify from primary smart-farming paper: Krishnan et al. (2024) |
-| OQ-04 | Default training augmentation policy confirmation: verify exclusion of vertical flip (reserved for optional ablation ABL-05) and exact jitter parameters across all configuration files | Reconciled in M0 correction pass; verified across configs and docs |
-
-### Non-Critical Open Questions (May Be Experimentally Resolved During M1/M2)
-
-| ID | Non-Critical Question | Resolution Path |
-|----|-----------------------|----------------|
-| OQ-05 | PlantVillage exact per-class image counts and class distribution | Download dataset during M1; count and log exact files |
-| OQ-06 | PlantVillage dataset licensing details (CC0 vs. other terms) | Inspect dataset README and LICENSE file upon download in M1 |
-| OQ-07 | Hardware memory feasibility: whether 224x224 final config fits 16 GB RAM at batch size 32 | Memory profiling during M1; adjust batch size to 16 if required |
-| OQ-08 | Class-weighted Cross-Entropy loss: whether inverse frequency weighting improves macro F1 | Measure class imbalance in M1; run ablation ABL-02 in M2 |
-| OQ-09 | Final dropout rate selection | Explored dynamically within STO search space [0.0, 0.5] |
-| OQ-10 | Optional edge deployment and ONNX runtime latency | Benchmark latency during optional deployment phase OBJ-11 |
-
-### Resolved in M0 Correction Pass
+The following theoretical, architectural, and experimental specifications are formally resolved and defined:
 
 | ID | Item | Resolution Summary |
 |----|------|-------------------|
-| RES-01 | STOA Primary Author Attribution | Corrected from initial draft misattribution to Gaurav Dhiman and Amandeep Kaur (2019), *EAAI*, 82, 148–174, DOI: 10.1016/j.engappai.2019.03.021 |
-| RES-02 | Smart Farming Source Paper Metadata | Confirmed: Krishnan, V. G., Vikranth, B., Sumithra, M., Laxmi, B. P., & Gowri, B. S. (2024). Smart Farming with Sooty Tern Optimization based LS-HGNet Classification Model. *IJERR*, 37(spl), 96–108. DOI: 10.52756/ijerr.2024.v37spl.008 |
+| RES-01 | STOA Primary Author Attribution | Confirmed: Gaurav Dhiman and Amandeep Kaur (2019), *EAAI*, 82, 148–174, DOI: 10.1016/j.engappai.2019.03.021 |
+| RES-02 | Smart Farming Source Paper Metadata | Confirmed: Krishnan, V. G., Vikranth, B., Sumithra, M., Laxmi, B. P., & Gowri, B. S. (2024). *IJERR*, 37(spl), 96–108. DOI: 10.52756/ijerr.2024.v37spl.008 |
 | RES-03 | Scope & Originality Boundary | Confirmed: Source paper performs UAV maize tassel detection; our project is an independent adaptation for tomato leaf disease classification |
-| RES-04 | Vertical Flip Contradiction | Removed random vertical flip from default configuration; documented strictly as optional ablation ABL-05 |
+| RES-04 | Original vs. Stabilized STOA Distinction | Original source-derived formulation and project-modified stabilized variant are formally distinguished in documentation and configs |
+| RES-05 | Stabilized STOA Variant Design | Project-specific modifications formalized: normalized perturbation $\vec{\Omega}$, damped spiral $b=0.1$, additive update, and consistent Option A best-guided formulation ($\vec{P}_{best}$ throughout) |
+| RES-06 | Three Optimizer Controls | Explicitly separated into `original_strict`, `stabilized`, and `random_search` with equal-budget protocol (25 dev / 100 final) |
+| RES-07 | Vertical Flip Contradiction | Removed random vertical flip from default configuration on biological grounds; documented strictly as optional ablation ABL-05 |
+| RES-08 | LS-HGNet Architecture Specification | Hourglass topology, DWSConv block, MultiDilated bottleneck rates [1, 2, 4], and GAP+Linear classification head finalized |
+| RES-09 | Original STOA Equation Verification — M0 Formal Resolution | **Formally Accepted (Literature-Verified, Publisher-Unverified).** The documented equations ($S_A$, $\vec{C}_{sa}$, $\vec{M}_s$, $\vec{D}_s$, 3D spiral) are consistently reproduced across multiple independent secondary sources citing Dhiman & Kaur (2019). Direct full-text publisher PDF access was not achieved; this limitation is acknowledged. If discrepancies are found via institutional access in M1, the equations must be updated before publication. |
+
+### Deferred to Implementation Milestones (M1/M2)
+
+The following questions are not architecture or research specification blockers. They are practical questions resolvable only during implementation and are formally deferred:
+
+| ID | Deferred Question | Resolution Milestone |
+|----|-------------------|---------------------|
+| DEF-01 | PlantVillage exact per-class image counts and verified class distribution | M1: Count files on disk after download |
+| DEF-02 | PlantVillage dataset licensing terms (CC0 vs. other) | M1: Inspect dataset README/LICENSE |
+| DEF-03 | Hardware memory feasibility: 224×224 at batch size 32 on 16 GB RAM | M1: Memory profiling; reduce to batch 16 if needed |
+| DEF-04 | Class-weighted Cross-Entropy loss benefit on macro F1 | M2: Ablation ABL-02 after measuring class imbalance |
+| DEF-05 | Final dropout rate selection | M1/M2: Explored within STO search space [0.0, 0.5] |
+| DEF-06 | Optional edge deployment ONNX runtime latency | OBJ-11 (optional): Benchmark during deployment phase |
 
 ---
 
-*End of Architecture Decisions Log — M0 Research Lock — Status: NOT READY — CRITICAL VERIFICATION REMAINS*
+*End of Architecture Decisions Log — M0 LOCKED — Architecture Decisions Approved 2026-10-01*

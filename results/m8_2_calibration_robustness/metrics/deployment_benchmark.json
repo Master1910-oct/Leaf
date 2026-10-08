@@ -1,0 +1,29 @@
+{
+  "checkpoint": "D:\\Leaf\\results\\m7_3_full_training\\checkpoints\\best_model.pt",
+  "checkpoint_size_mb": 92.7719,
+  "total_parameters": 8041354,
+  "image_size": "224x224",
+  "batch_size": 1,
+  "device": "CPU",
+  "warmup_runs": 10,
+  "measured_runs": 200,
+  "latency_ms": {
+    "mean": 132.177,
+    "median": 128.164,
+    "std": 16.713,
+    "min": 109.505,
+    "max": 221.753,
+    "p95": 171.769,
+    "p99": 202.671
+  },
+  "throughput_images_per_sec": 7.566,
+  "process_memory_mb": 1122.9,
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "pytorch_version": "2.2.2+cpu",
+  "torchvision_version": "0.17.2+cpu",
+  "cpu_device": "Intel64 Family 6 Model 191 Stepping 2, GenuineIntel",
+  "cpu_count": 16,
+  "platform": "Windows-11-10.0.26100-SP0",
+  "seed": 42,
+  "timestamp": "2026-10-08T07:28:54.981552Z"
+}

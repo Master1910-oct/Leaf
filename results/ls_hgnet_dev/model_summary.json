@@ -1,0 +1,18 @@
+{
+  "architecture": "LS-HGNet (AgriAI adaptation)",
+  "adaptation_note": "Adapted from UAV maize tassel detection (Krishnan et al., 2024) to 10-class tomato leaf disease classification on PlantVillage.",
+  "in_channels": 3,
+  "num_classes": 10,
+  "base_channels": 32,
+  "num_stacks": 2,
+  "encoder_levels": 3,
+  "dilation_rates": [
+    1,
+    2,
+    4
+  ],
+  "dropout": 0.3,
+  "total_parameters": 357226,
+  "trainable_parameters": 357226,
+  "estimated_model_size_mb": 1.3914
+}

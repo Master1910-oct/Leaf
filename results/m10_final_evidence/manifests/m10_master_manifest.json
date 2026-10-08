@@ -1,0 +1,102 @@
+{
+  "project": {
+    "name": "AgriAI / Leaf",
+    "task": "Tomato Leaf Disease Classification",
+    "root_directory": "D:\\Leaf",
+    "final_status": "LOCKED & COMPLETE"
+  },
+  "model": {
+    "name": "LS-HGNet",
+    "description": "Lightweight Stacked Hourglass Network with Multi-Dilation Bottlenecks",
+    "parameters": 8041354,
+    "input_channels": 3,
+    "num_classes": 10,
+    "base_channels": 64,
+    "num_stacks": 3,
+    "encoder_levels": 4,
+    "dilation_rates": [
+      1,
+      2,
+      4
+    ],
+    "dropout": 0.3
+  },
+  "checkpoint": {
+    "path": "results/m7_3_full_training/checkpoints/best_model.pt",
+    "sha256": "4E4145378F2DE852AB7EABE1E72FE7AE7AFA31F608E0F0E246E06C41A7F098A8",
+    "file_size_bytes": 97278348,
+    "epoch": 9
+  },
+  "dataset": {
+    "total_images": 18160,
+    "classes_count": 10,
+    "splits": {
+      "train": {
+        "path": "data/train.csv",
+        "samples": 12712,
+        "pct": 70.0
+      },
+      "val": {
+        "path": "data/val.csv",
+        "samples": 2724,
+        "pct": 15.0
+      },
+      "test": {
+        "path": "data/test.csv",
+        "samples": 2724,
+        "pct": 15.0
+      }
+    },
+    "data_leakage": "NONE (0 sample overlap between splits)"
+  },
+  "verified_metrics": {
+    "m7_baseline": {
+      "split": "val",
+      "accuracy": 91.08,
+      "macro_f1": 88.16
+    },
+    "m7_3_convergence": {
+      "split": "val",
+      "accuracy": 95.52,
+      "macro_f1": 94.23,
+      "macro_precision": 94.35,
+      "macro_recall": 94.37,
+      "weighted_f1": 95.49
+    },
+    "m8_2_holdout": {
+      "split": "val_holdout_50pct",
+      "accuracy": 96.11,
+      "macro_f1": 95.12,
+      "macro_precision": 95.31,
+      "macro_recall": 95.18,
+      "learned_temperature": 1.155831
+    },
+    "m9_locked_test": {
+      "split": "test",
+      "accuracy": 95.56,
+      "macro_f1": 94.06,
+      "macro_precision": 94.0,
+      "macro_recall": 94.43,
+      "weighted_f1": 95.55,
+      "weighted_precision": 95.72,
+      "weighted_recall": 95.56,
+      "total_samples": 2724,
+      "correct_samples": 2603,
+      "incorrect_samples": 121
+    }
+  },
+  "generalization_gap": {
+    "val_to_test_macro_f1_gap": 0.17,
+    "val_to_test_accuracy_gap": -0.04,
+    "net_macro_f1_gain_vs_m7_baseline": 5.9
+  },
+  "reproducibility": {
+    "preprocessing": "Resize 224x224, ImageNet normalization",
+    "eval_transform_augmentations": "NONE (Deterministic)",
+    "model_loading": "strict=True (0 missing, 0 unexpected)",
+    "one_shot_test_evaluation": true,
+    "post_test_tuning": "NONE",
+    "test_leakage": "NONE"
+  },
+  "final_status": "FINAL RESEARCH EVIDENCE PACKAGE: PASS"
+}

@@ -1,0 +1,30 @@
+{
+  "candidate_id": 5,
+  "iteration": 1,
+  "agent_id": 1,
+  "hyperparameters": {
+    "learning_rate": 0.00016861568540441394,
+    "weight_decay": 0.0004701143062247067,
+    "dropout": 0.4932374589443499,
+    "batch_size": 32
+  },
+  "performance": {
+    "validation_macro_f1": 0.539,
+    "validation_accuracy": 0.6766,
+    "validation_macro_precision": 0.6071,
+    "validation_macro_recall": 0.5387,
+    "fitness": 0.461
+  },
+  "proxy_protocol": {
+    "epochs": 2,
+    "image_size": 224,
+    "train_subset": "20% stratified",
+    "val_set": "Full 100% (2,724 images)"
+  },
+  "comparison_to_default_baseline": {
+    "default_val_macro_f1": 0.8816,
+    "sto_val_macro_f1": 0.539,
+    "delta_f1": -0.3426,
+    "status": "Below Default baseline (expected under rapid 2-epoch / 20% proxy)"
+  }
+}

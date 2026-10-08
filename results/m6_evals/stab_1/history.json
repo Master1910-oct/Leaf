@@ -1,0 +1,38 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 10.8489,
+    "train_accuracy": 0.16,
+    "val_loss": 5.5052,
+    "val_accuracy": 0.3146,
+    "val_macro_f1": 0.0838,
+    "val_macro_precision": 0.1071,
+    "val_macro_recall": 0.1248,
+    "learning_rate": 0.00353111691382141,
+    "duration_seconds": 50.53
+  },
+  {
+    "epoch": 2,
+    "train_loss": 7.7176,
+    "train_accuracy": 0.275,
+    "val_loss": 4.9217,
+    "val_accuracy": 0.3223,
+    "val_macro_f1": 0.079,
+    "val_macro_precision": 0.0605,
+    "val_macro_recall": 0.1295,
+    "learning_rate": 0.00353111691382141,
+    "duration_seconds": 47.87
+  },
+  {
+    "epoch": 3,
+    "train_loss": 5.9226,
+    "train_accuracy": 0.33,
+    "val_loss": 5.6421,
+    "val_accuracy": 0.3388,
+    "val_macro_f1": 0.0987,
+    "val_macro_precision": 0.1072,
+    "val_macro_recall": 0.1399,
+    "learning_rate": 0.00353111691382141,
+    "duration_seconds": 48.15
+  }
+]

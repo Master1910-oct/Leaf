@@ -1,0 +1,75 @@
+{
+  "Tomato___Bacterial_spot": {
+    "precision": 0.9766666666666667,
+    "recall": 0.9184952978056427,
+    "f1-score": 0.9466882067851373,
+    "support": 319.0
+  },
+  "Tomato___Early_blight": {
+    "precision": 0.9562043795620438,
+    "recall": 0.8733333333333333,
+    "f1-score": 0.9128919860627178,
+    "support": 150.0
+  },
+  "Tomato___Late_blight": {
+    "precision": 0.9188311688311688,
+    "recall": 0.9860627177700348,
+    "f1-score": 0.9512605042016806,
+    "support": 287.0
+  },
+  "Tomato___Leaf_Mold": {
+    "precision": 0.9785714285714285,
+    "recall": 0.958041958041958,
+    "f1-score": 0.9681978798586572,
+    "support": 143.0
+  },
+  "Tomato___Septoria_leaf_spot": {
+    "precision": 0.9523809523809523,
+    "recall": 0.9774436090225563,
+    "f1-score": 0.9647495361781077,
+    "support": 266.0
+  },
+  "Tomato___Spider_mites Two-spotted_spider_mite": {
+    "precision": 0.8641114982578397,
+    "recall": 0.9880478087649402,
+    "f1-score": 0.9219330855018587,
+    "support": 251.0
+  },
+  "Tomato___Target_Spot": {
+    "precision": 0.9032258064516129,
+    "recall": 0.8,
+    "f1-score": 0.8484848484848485,
+    "support": 210.0
+  },
+  "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+    "precision": 0.9974842767295597,
+    "recall": 0.987546699875467,
+    "f1-score": 0.9924906132665833,
+    "support": 803.0
+  },
+  "Tomato___Tomato_mosaic_virus": {
+    "precision": 0.9,
+    "recall": 0.9642857142857143,
+    "f1-score": 0.9310344827586207,
+    "support": 56.0
+  },
+  "Tomato___healthy": {
+    "precision": 0.9873949579831933,
+    "recall": 0.9832635983263598,
+    "f1-score": 0.9853249475890985,
+    "support": 239.0
+  },
+  "accuracy": 0.9552129221732746,
+  "macro avg": {
+    "precision": 0.9434871135434466,
+    "recall": 0.9436520737226006,
+    "f1-score": 0.9423056090687311,
+    "support": 2724.0
+  },
+  "weighted avg": {
+    "precision": 0.9566437559706104,
+    "recall": 0.9552129221732746,
+    "f1-score": 0.9549201000833487,
+    "support": 2724.0
+  }
+}

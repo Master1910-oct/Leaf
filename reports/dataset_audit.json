@@ -1,0 +1,38 @@
+{
+  "dataset_name": "PlantVillage Tomato Subset",
+  "raw_directory": "D:\\Leaf\\data\\raw\\plantvillage_tomato",
+  "total_images": 18160,
+  "num_classes": 10,
+  "per_class_counts": {
+    "Tomato___Bacterial_spot": 2127,
+    "Tomato___Early_blight": 1000,
+    "Tomato___Late_blight": 1909,
+    "Tomato___Leaf_Mold": 952,
+    "Tomato___Septoria_leaf_spot": 1771,
+    "Tomato___Spider_mites Two-spotted_spider_mite": 1676,
+    "Tomato___Target_Spot": 1404,
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus": 5357,
+    "Tomato___Tomato_mosaic_virus": 373,
+    "Tomato___healthy": 1591
+  },
+  "class_imbalance": {
+    "max_class": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+    "max_count": 5357,
+    "min_class": "Tomato___Tomato_mosaic_virus",
+    "min_count": 373,
+    "imbalance_ratio": 14.36
+  },
+  "formats": {
+    "JPEG": 18160
+  },
+  "color_modes": {
+    "RGB": 18160
+  },
+  "dimensions": {
+    "256x256": 18160
+  },
+  "corrupt_files_count": 0,
+  "corrupt_files": [],
+  "duplicate_filenames_count": 0,
+  "duplicate_filenames_sample": []
+}

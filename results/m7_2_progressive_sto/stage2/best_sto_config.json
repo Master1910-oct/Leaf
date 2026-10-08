@@ -1,0 +1,35 @@
+{
+  "candidate_id": 5,
+  "iteration": 1,
+  "agent_id": 2,
+  "hyperparameters": {
+    "learning_rate": 0.0016172843095389766,
+    "weight_decay": 6.905866704757955e-06,
+    "dropout": 0.47635399769671083,
+    "batch_size": 32
+  },
+  "performance": {
+    "validation_macro_f1": 0.5796,
+    "validation_accuracy": 0.6784,
+    "validation_macro_precision": 0.6921,
+    "validation_macro_recall": 0.5938,
+    "fitness": 0.4204
+  },
+  "data_protocol": {
+    "stage": "Stage 2 (Cumulative 50%)",
+    "training_samples": 6356,
+    "validation_samples": 2724,
+    "epochs": 1,
+    "image_size": 224
+  },
+  "comparison_to_stage1": {
+    "stage1_best_val_macro_f1": 0.539,
+    "stage2_best_val_macro_f1": 0.5796,
+    "delta_f1": 0.0406
+  },
+  "comparison_to_default_baseline": {
+    "default_val_macro_f1": 0.8816,
+    "stage2_val_macro_f1": 0.5796,
+    "delta_f1": -0.302
+  }
+}

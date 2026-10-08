@@ -1,0 +1,26 @@
+eval_epochs: 1
+experiment: m6_sto_dev
+image_size: 128
+model:
+  base_channels: 64
+  encoder_levels: 4
+  num_stacks: 3
+num_agents: 2
+num_iterations: 1
+search_space:
+  batch_size:
+  - 16
+  - 32
+  - 64
+  dropout:
+  - 0.0
+  - 0.5
+  learning_rate:
+  - 0.0001
+  - 0.01
+  weight_decay:
+  - 1.0e-06
+  - 0.01
+seed: 42
+total_evaluations: 4
+variant: stabilized

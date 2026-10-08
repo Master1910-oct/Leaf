@@ -1,0 +1,45 @@
+{
+  "candidate_id": "candidate_b_sto",
+  "architecture": "LS-HGNet (fixed M4)",
+  "seed": 42,
+  "image_size": 224,
+  "epochs_trained": 5,
+  "best_epoch": 4,
+  "device": "cpu",
+  "hyperparameters": {
+    "learning_rate": 0.004977535,
+    "weight_decay": 1.8342e-06,
+    "dropout": 0.5,
+    "batch_size": 32
+  },
+  "model_parameters": {
+    "base_channels": 64,
+    "num_stacks": 3,
+    "encoder_levels": 4,
+    "dilation_rates": [
+      1,
+      2,
+      4
+    ],
+    "total_parameters": 8041354,
+    "checkpoint_size_mb": 92.7721
+  },
+  "validation_metrics": {
+    "accuracy": 0.825257,
+    "macro_precision": 0.809663,
+    "macro_recall": 0.772335,
+    "macro_f1": 0.769113
+  },
+  "computational_metrics": {
+    "total_parameters": 8041354,
+    "checkpoint_size_mb": 92.7721,
+    "median_inference_latency_ms": 70.6005,
+    "mean_inference_latency_ms": 89.1211
+  },
+  "dataset_split": {
+    "train_samples": 12712,
+    "val_samples": 2724,
+    "test_samples": "2,724 (STRICTLY ISOLATED \u2014 not accessed in this script)"
+  },
+  "total_training_runtime_s": 14960.83
+}

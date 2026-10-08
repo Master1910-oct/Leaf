@@ -1,0 +1,50 @@
+{
+  "selection_objective": "Highest validation Macro-F1",
+  "winner": "candidate_a_default",
+  "ranking": [
+    "candidate_a_default",
+    "candidate_c_random",
+    "candidate_b_sto"
+  ],
+  "candidates": {
+    "candidate_a_default": {
+      "macro_f1": 0.881642,
+      "accuracy": 0.910793,
+      "macro_precision": 0.895255,
+      "macro_recall": 0.886605,
+      "hyperparameters": {
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "dropout": 0.3,
+        "batch_size": 32
+      },
+      "runtime_s": 11231.53
+    },
+    "candidate_b_sto": {
+      "macro_f1": 0.769113,
+      "accuracy": 0.825257,
+      "macro_precision": 0.809663,
+      "macro_recall": 0.772335,
+      "hyperparameters": {
+        "learning_rate": 0.004977535,
+        "weight_decay": 1.8342e-06,
+        "dropout": 0.5,
+        "batch_size": 32
+      },
+      "runtime_s": 14960.83
+    },
+    "candidate_c_random": {
+      "macro_f1": 0.852169,
+      "accuracy": 0.890235,
+      "macro_precision": 0.876943,
+      "macro_recall": 0.855449,
+      "hyperparameters": {
+        "learning_rate": 0.00475,
+        "weight_decay": 5.25e-06,
+        "dropout": 0.431,
+        "batch_size": 16
+      },
+      "runtime_s": 18681.28
+    }
+  }
+}

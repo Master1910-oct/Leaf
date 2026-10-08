@@ -1,0 +1,26 @@
+# AgriAI — Core Dependencies for M1 (Dataset & Environment Setup)
+# Python 3.12 (Host CPU Standard)
+
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Deep Learning Framework
+torch==2.2.2+cpu
+torchvision==0.17.2+cpu
+
+# Scientific & Data Processing
+numpy==1.26.4
+pandas==3.0.6
+scipy==1.17.1
+scikit-learn==1.9.1
+
+# Image Processing
+Pillow==12.3.0
+
+# Configuration & Utilities
+PyYAML==6.0.3
+tqdm==4.70.1
+psutil==7.2.2
+
+# Visualization & Reporting
+matplotlib==3.11.2
+seaborn==0.13.2

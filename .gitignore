@@ -1,51 +1,42 @@
+@"
+# ============================================================
+# Leaf — Smart Farming / LS-HGNet Project
+# Git ignore rules
+# ============================================================
+
+# -------------------------
 # Python
+# -------------------------
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
 *.pyd
-*.pyw
-.Python
+*.pyo
 *.egg
 *.egg-info/
-dist/
-build/
-eggs/
-parts/
-var/
-sdist/
-wheels/
-.installed.cfg
+.Python
+.pytest_cache/
+.tox/
+.mypy_cache/
+.dmypy.json
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
 
+# -------------------------
 # Virtual environments
+# -------------------------
 .venv/
 venv/
 env/
-.env/
 ENV/
+.env/
+*.env
 
-# Environment variables — NEVER commit
-.env
-
-# Datasets — store separately, never in Git
-data/raw/
-data/processed/
-datasets/
-*.csv.gz
-
-# Trained model weights — store separately
-models/*.pt
-models/*.pth
-models/*.onnx
-models/*.bin
-
-# Experiment checkpoints — store separately
-experiments/*/checkpoints/
-experiments/*/logs/*.tfevents.*
-
-# Jupyter notebooks checkpoints
-.ipynb_checkpoints/
-
-# IDE and OS
+# -------------------------
+# IDE / OS
+# -------------------------
 .vscode/
 .idea/
 *.suo
@@ -54,11 +45,9 @@ experiments/*/logs/*.tfevents.*
 Thumbs.db
 desktop.ini
 
-# Logs
-*.log
-logs/
-
-# Node.js (React dashboard)
+# -------------------------
+# Node.js
+# -------------------------
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -66,28 +55,81 @@ yarn-error.log*
 .npm
 .yarn-integrity
 
-# Build outputs
+# -------------------------
+# Frontend build outputs
+# -------------------------
 frontend/build/
 frontend/dist/
 
-# Coverage reports
-htmlcov/
-.coverage
-.coverage.*
-coverage.xml
-*.cover
-.hypothesis/
+# -------------------------
+# Raw / processed datasets
+# -------------------------
+data/raw/
+data/processed/
+datasets/
+test_data/
+*.csv.gz
 
-# Testing
-.pytest_cache/
-.tox/
+# -------------------------
+# Large trained model files
+# -------------------------
+*.pt
+*.pth
+*.onnx
+*.bin
+*.safetensors
 
-# Type checking
-.mypy_cache/
-.dmypy.json
+# -------------------------
+# Experiment checkpoints
+# -------------------------
+experiments/*/checkpoints/
+experiments/*/logs/
+results/**/checkpoints/
 
-# Temporary files
+# -------------------------
+# Large / generated result artifacts
+# -------------------------
+results/**/predictions/
+results/**/cache/
+results/**/tmp/
+
+# -------------------------
+# Training logs
+# -------------------------
+*.log
+logs/
+*.tfevents.*
+
+# -------------------------
+# Temporary / scratch work
+# -------------------------
+scratch/
+scratch_*.txt
 *.tmp
 *.bak
 *.swp
 *~
+
+# -------------------------
+# Build / packaging
+# -------------------------
+dist/
+build/
+eggs/
+parts/
+sdist/
+wheels/
+.installed.cfg
+
+# -------------------------
+# Jupyter
+# -------------------------
+.ipynb_checkpoints/
+
+# -------------------------
+# Local secrets
+# -------------------------
+.env
+.env.*
+!.env.example
+"@ | Set-Content .gitignore

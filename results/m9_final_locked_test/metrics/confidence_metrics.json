@@ -1,0 +1,21 @@
+{
+  "raw": {
+    "mean_confidence": 95.802,
+    "median_confidence": 99.9332,
+    "min_confidence": 32.1743,
+    "max_confidence": 100.0,
+    "std_confidence": 10.5145,
+    "correct_mean_confidence": 96.9712,
+    "correct_median_confidence": 99.9485,
+    "incorrect_mean_confidence": 70.6491,
+    "incorrect_median_confidence": 69.1044
+  },
+  "temperature_scaled_T1.1558": {
+    "temperature_used": 1.155831,
+    "source": "M8.2 validation calibration subset",
+    "mean_confidence": 94.8337,
+    "median_confidence": 99.7994,
+    "correct_mean_confidence": 96.0976,
+    "incorrect_mean_confidence": 67.6447
+  }
+}

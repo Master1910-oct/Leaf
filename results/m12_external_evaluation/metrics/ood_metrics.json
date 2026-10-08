@@ -1,0 +1,8 @@
+{
+  "total_ood_images": 19714,
+  "mean_max_confidence_pct": 82.2304,
+  "median_max_confidence_pct": 90.125,
+  "pct_above_50": 91.57,
+  "pct_above_80": 63.57,
+  "pct_above_90": 50.2
+}

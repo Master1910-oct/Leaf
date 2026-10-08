@@ -1,0 +1,17 @@
+{
+  "batch_size": 1,
+  "input_shape": [
+    1,
+    3,
+    224,
+    224
+  ],
+  "device": "cpu",
+  "num_warmup_iterations": 20,
+  "num_measured_iterations": 100,
+  "median_latency_ms": 51.09390000143321,
+  "mean_latency_ms": 60.73786899985862,
+  "std_latency_ms": 21.942537188710936,
+  "min_latency_ms": 48.09430000022985,
+  "max_latency_ms": 125.03819999983534
+}

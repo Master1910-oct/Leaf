@@ -1,0 +1,16 @@
+{
+  "architecture": "BaselineCNN",
+  "in_channels": 3,
+  "num_classes": 10,
+  "channels": [
+    32,
+    64,
+    128,
+    256
+  ],
+  "fc_dim": 256,
+  "dropout": 0.2,
+  "total_parameters": 457258,
+  "trainable_parameters": 457258,
+  "estimated_model_size_mb": 1.748
+}

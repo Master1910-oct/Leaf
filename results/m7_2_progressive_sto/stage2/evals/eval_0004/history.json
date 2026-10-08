@@ -1,0 +1,14 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 4.2133,
+    "train_accuracy": 0.3822,
+    "val_loss": 1.8709,
+    "val_accuracy": 0.5294,
+    "val_macro_f1": 0.4148,
+    "val_macro_precision": 0.6507,
+    "val_macro_recall": 0.4069,
+    "learning_rate": 0.0010029045963062203,
+    "duration_seconds": 1097.12
+  }
+]

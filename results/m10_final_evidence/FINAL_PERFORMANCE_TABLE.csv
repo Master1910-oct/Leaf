@@ -1,0 +1,5 @@
+Stage,Dataset,Samples,Accuracy,Macro-F1,Weighted-F1,Macro-Precision,Macro-Recall,Source
+M7 Frozen Baseline,Validation (100%),2724,91.08,88.16,N/A,N/A,N/A,results/m7_final_selection/M7_FINAL_SELECTION_REPORT.md
+M7.3 Convergence (Epoch 9),Validation (100%),2724,95.52,94.23,95.49,94.35,94.37,results/m7_3_full_training/metrics/metrics.json
+M8.2 Calibration / Holdout,Holdout Val (50%),1362,96.11,95.12,N/A,95.31,95.18,results/m8_2_calibration_robustness/metrics/robustness_metrics.json
+M9 Final Locked Test,Locked Test (100%),2724,95.56,94.06,95.55,94.0,94.43,results/m9_final_locked_test/metrics/test_metrics.json

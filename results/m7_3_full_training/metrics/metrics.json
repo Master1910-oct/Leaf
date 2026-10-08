@@ -1,0 +1,40 @@
+{
+  "candidate_id": "m7_3_extended_10epochs",
+  "architecture": "LS-HGNet",
+  "seed": 42,
+  "epochs_trained": 10,
+  "best_epoch": 9,
+  "device": "cpu",
+  "hyperparameters": {
+    "experiment": "M7.3 Full-Training Convergence",
+    "architecture": "LS-HGNet",
+    "seed": 42,
+    "epochs": 10,
+    "image_size": 224,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.3,
+    "device": "cpu",
+    "train_csv": "data/train.csv",
+    "val_csv": "data/val.csv",
+    "frozen_baseline_f1": 0.881642
+  },
+  "model_parameters": {
+    "total_parameters": 8041354,
+    "checkpoint_size_mb": 92.7718620300293
+  },
+  "best_validation_metrics": {
+    "accuracy": 0.9552129221732746,
+    "macro_precision": 0.9434871135434466,
+    "macro_recall": 0.9436520737226006,
+    "macro_f1": 0.9423056090687311,
+    "loss": 0.12616818478103953
+  },
+  "total_training_runtime_s": 25547.19,
+  "comparison_vs_frozen_m7": {
+    "frozen_m7_val_macro_f1": 0.881642,
+    "m7_3_val_macro_f1": 0.9423056090687311,
+    "delta_macro_f1": 0.060664
+  }
+}

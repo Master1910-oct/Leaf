@@ -1,0 +1,10 @@
+{
+  "learned_temperature": 1.155830979347229,
+  "optimizer": "LBFGS",
+  "lr": 0.01,
+  "max_iter": 100,
+  "initial_temperature": 1.5,
+  "fitted_on": "calibration_subset",
+  "evaluated_on": "calibration_holdout",
+  "model_weights_modified": false
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "batch_size": 32,
+    "image_size": "224x224",
+    "device": "cpu",
+    "ram_start_mb": 160.19,
+    "ram_peak_mb": 437.14,
+    "ram_delta_mb": 276.95,
+    "step_time_ms": 1071.06,
+    "throughput_img_per_sec": 29.88,
+    "status": "PASS"
+  },
+  {
+    "batch_size": 32,
+    "image_size": "128x128",
+    "device": "cpu",
+    "ram_start_mb": 437.14,
+    "ram_peak_mb": 811.21,
+    "ram_delta_mb": 374.07,
+    "step_time_ms": 264.49,
+    "throughput_img_per_sec": 120.99,
+    "status": "PASS"
+  },
+  {
+    "batch_size": 16,
+    "image_size": "224x224",
+    "device": "cpu",
+    "ram_start_mb": 811.21,
+    "ram_peak_mb": 1005.99,
+    "ram_delta_mb": 194.78,
+    "step_time_ms": 404.76,
+    "throughput_img_per_sec": 39.53,
+    "status": "PASS"
+  },
+  {
+    "batch_size": 16,
+    "image_size": "128x128",
+    "device": "cpu",
+    "ram_start_mb": 1005.99,
+    "ram_peak_mb": 1006.45,
+    "ram_delta_mb": 0.45,
+    "step_time_ms": 120.05,
+    "throughput_img_per_sec": 133.28,
+    "status": "PASS"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "candidate_id": "candidate_c_random",
+  "status": "RUNNING",
+  "epoch": 5,
+  "total_epochs": 5,
+  "epoch_progress_pct": 100.0,
+  "overall_progress_pct": 100.0,
+  "batch": 795,
+  "total_batches": 795,
+  "elapsed_str": "05:07:55",
+  "epoch_elapsed_str": "57:31",
+  "estimated_remaining_str": "00:00",
+  "eta_str": "03:38:11 PM",
+  "cpu_percent": 26.9,
+  "ram_mb": 11246.2,
+  "device": "CPU"
+}

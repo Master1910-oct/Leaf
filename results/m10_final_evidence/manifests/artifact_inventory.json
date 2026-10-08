@@ -1,0 +1,275 @@
+{
+  "audit_timestamp": "2026-10-08T10:47:57.536708Z",
+  "total_inventoried": 38,
+  "artifacts": [
+    {
+      "artifact_path": "results/m7_final_selection/M7_FINAL_SELECTION_REPORT.md",
+      "stage": "M7",
+      "type": "report",
+      "exists": false
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/checkpoints/best_model.pt",
+      "stage": "M7.3",
+      "type": "checkpoint",
+      "exists": true,
+      "file_size_bytes": 97278348,
+      "sha256": "4E4145378F2DE852AB7EABE1E72FE7AE7AFA31F608E0F0E246E06C41A7F098A8"
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/checkpoints/checkpoint_last.pt",
+      "stage": "M7.3",
+      "type": "checkpoint",
+      "exists": true,
+      "file_size_bytes": 97288135
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/metrics/metrics.json",
+      "stage": "M7.3",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 1100
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/metrics/history.json",
+      "stage": "M7.3",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 3141
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/metrics/classification_report.json",
+      "stage": "M7.3",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 2048
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/plots/convergence_curve.png",
+      "stage": "M7.3",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 299106
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/plots/confusion_matrix.png",
+      "stage": "M7.3",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 338559
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/config/m7_3_config.json",
+      "stage": "M7.3",
+      "type": "config",
+      "exists": true,
+      "file_size_bytes": 352
+    },
+    {
+      "artifact_path": "results/m7_3_full_training/M7_3_FINAL_AUDIT.md",
+      "stage": "M7.3",
+      "type": "audit",
+      "exists": true,
+      "file_size_bytes": 8023
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/M8_2_REPORT.md",
+      "stage": "M8.2",
+      "type": "report",
+      "exists": true,
+      "file_size_bytes": 5953
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/config/m8_2_config.json",
+      "stage": "M8.2",
+      "type": "config",
+      "exists": true,
+      "file_size_bytes": 1805
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/manifests/calibration_subset.csv",
+      "stage": "M8.2",
+      "type": "manifest",
+      "exists": true,
+      "file_size_bytes": 293292
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/manifests/holdout_subset.csv",
+      "stage": "M8.2",
+      "type": "manifest",
+      "exists": true,
+      "file_size_bytes": 293446
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/manifests/data_isolation_audit.json",
+      "stage": "M8.2",
+      "type": "manifest",
+      "exists": true,
+      "file_size_bytes": 879
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/metrics/calibration_metrics.json",
+      "stage": "M8.2",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 626
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/metrics/temperature_scaling.json",
+      "stage": "M8.2",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 255
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/metrics/robustness_metrics.json",
+      "stage": "M8.2",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 2260
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/metrics/deployment_benchmark.json",
+      "stage": "M8.2",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 895
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/plots/reliability_before.png",
+      "stage": "M8.2",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 53978
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/plots/reliability_after.png",
+      "stage": "M8.2",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 53880
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/plots/robustness_macro_f1.png",
+      "stage": "M8.2",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 55419
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/plots/robustness_accuracy.png",
+      "stage": "M8.2",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 55749
+    },
+    {
+      "artifact_path": "results/m8_2_calibration_robustness/plots/inference_latency_distribution.png",
+      "stage": "M8.2",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 45414
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/M9_FINAL_REPORT.md",
+      "stage": "M9",
+      "type": "report",
+      "exists": true,
+      "file_size_bytes": 9951
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/config/m9_config.json",
+      "stage": "M9",
+      "type": "config",
+      "exists": true,
+      "file_size_bytes": 914
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/manifests/m9_test_audit.json",
+      "stage": "M9",
+      "type": "manifest",
+      "exists": true,
+      "file_size_bytes": 1209
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/metrics/test_metrics.json",
+      "stage": "M9",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 287
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/metrics/per_class_metrics.csv",
+      "stage": "M9",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 627
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/metrics/confusion_matrix.csv",
+      "stage": "M9",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 765
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/metrics/confidence_metrics.json",
+      "stage": "M9",
+      "type": "metrics",
+      "exists": true,
+      "file_size_bytes": 633
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/metrics/test_predictions.csv",
+      "stage": "M9",
+      "type": "predictions",
+      "exists": true,
+      "file_size_bytes": 554680
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/plots/confusion_matrix.png",
+      "stage": "M9",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 90912
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/plots/confusion_matrix_normalized.png",
+      "stage": "M9",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 98611
+    },
+    {
+      "artifact_path": "results/m9_final_locked_test/plots/confidence_distribution.png",
+      "stage": "M9",
+      "type": "plot",
+      "exists": true,
+      "file_size_bytes": 46014
+    },
+    {
+      "artifact_path": "data/train.csv",
+      "stage": "Data",
+      "type": "split_csv",
+      "exists": true,
+      "file_size_bytes": 2762654,
+      "sha256": "B9189195E2EF0B799ACE799187539FDCBDCE3886F9EBB7FC8F6CEB8D6A5ECD2B"
+    },
+    {
+      "artifact_path": "data/val.csv",
+      "stage": "Data",
+      "type": "split_csv",
+      "exists": true,
+      "file_size_bytes": 586692,
+      "sha256": "54AAF6EF69104E5223FECE80C084EAEFDE77AF0A2FD0853F94C71018A65308A9"
+    },
+    {
+      "artifact_path": "data/test.csv",
+      "stage": "Data",
+      "type": "split_csv",
+      "exists": true,
+      "file_size_bytes": 589598,
+      "sha256": "8F29936C815562C2F9DC8B9A914E4D0F96677DF34FDE61052B697802D2D20BD6"
+    }
+  ]
+}

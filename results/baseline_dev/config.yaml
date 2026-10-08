@@ -1,0 +1,180 @@
+augmentation:
+  test:
+    apply: false
+  train:
+    color_jitter:
+      brightness: 0.3
+      contrast: 0.3
+      hue: 0.1
+      saturation: 0.3
+    random_horizontal_flip: 0.5
+    random_resized_crop:
+      scale_max: 1.0
+      scale_min: 0.7
+    random_rotation_degrees: 30
+    random_vertical_flip: 0.0
+  val:
+    apply: false
+baseline:
+  architecture: BaselineCNN
+  channels:
+  - 32
+  - 64
+  - 128
+  - 256
+  dropout: 0.2
+  fc_dim: 256
+  num_blocks: 4
+  target_params: 500000
+calibration:
+  fit_data: validation
+  method: temperature_scaling
+  save_dir: experiments/{experiment_name}/calibration
+dataset:
+  name: PlantVillage
+  num_classes: 10
+  root_dir: data/raw/plantvillage
+  split:
+    seed: 42
+    strategy: stratified
+    test: 0.15
+    train: 0.7
+    val: 0.15
+  split_dir: data/splits
+  task: tomato_disease_classification
+  test_csv: data/splits/test.csv
+  train_csv: data/splits/train.csv
+  val_csv: data/splits/val.csv
+evaluation:
+  dev_seed: 42
+  final_seeds:
+  - 42
+  - 123
+  - 456
+  report_format: mean_std
+experiment:
+  description: Development configuration for rapid iteration on local 16 GB laptop
+  name: agri_ai_development
+  phase: development
+  seed: 42
+grad_cam:
+  num_examples_per_class: 5
+  save_dir: experiments/{experiment_name}/grad_cam
+  target_layer: final_decoder_output
+logging:
+  level: INFO
+  log_to_file: true
+  tensorboard: true
+model:
+  architecture: LSHGNet
+  base_channels: 32
+  dilation_rates:
+  - 1
+  - 2
+  - 4
+  dropout: 0.3
+  encoder_levels: 3
+  inter_stack_skip: true
+  num_stacks: 2
+  upsampling: bilinear
+optimizer:
+  name: stoa
+  variant: stabilized
+output:
+  checkpoints_dir: experiments/{experiment_name}/checkpoints
+  experiments_dir: experiments
+  logs_dir: experiments/{experiment_name}/logs
+  results_dir: experiments/{experiment_name}/results
+  save_best_model: true
+  save_frequency_epochs: 10
+preprocessing:
+  input_size: 128
+  normalize:
+    mean:
+    - 0.485
+    - 0.456
+    - 0.406
+    std:
+    - 0.229
+    - 0.224
+    - 0.225
+random_search:
+  seed: 42
+  total_evaluations: 25
+robustness:
+  perturbations:
+  - severity_levels:
+    - 1.2
+    - 1.5
+    - 2.0
+    type: brightness_increase
+  - severity_levels:
+    - 0.8
+    - 0.5
+    - 0.3
+    type: brightness_decrease
+  - severity_levels:
+    - 0.5
+    - 1.5
+    - 2.0
+    type: contrast_change
+  - severity_levels:
+    - 0.05
+    - 0.1
+    - 0.2
+    type: gaussian_noise
+  - severity_levels:
+    - 3
+    - 5
+    - 9
+    type: gaussian_blur
+  - severity_levels:
+    - 80
+    - 50
+    - 20
+    type: jpeg_compression
+  - severity_levels:
+    - 0.7
+    - 0.5
+    - 0.3
+    type: low_light
+  save_dir: experiments/{experiment_name}/robustness
+stoa:
+  boundary_handling: clip
+  damping_factor: 0.1
+  fitness: 1_minus_macro_f1
+  fitness_data: validation
+  num_agents: 5
+  num_iterations: 5
+  search_space:
+    batch_size:
+      type: discrete
+      values:
+      - 16
+      - 32
+      - 64
+    dropout:
+      max: 0.5
+      min: 0.0
+      scale: linear
+    learning_rate:
+      max: 0.01
+      min: 0.0001
+      scale: log
+    weight_decay:
+      max: 0.01
+      min: 1.0e-06
+      scale: log
+  total_evaluations: 25
+  variant: stabilized
+training:
+  batch_size: 32
+  epochs: 50
+  learning_rate: 0.001
+  loss: cross_entropy
+  optimizer: adamw
+  scheduler:
+    T_max: 50
+    eta_min: 1.0e-06
+    type: cosine_annealing
+  weight_decay: 0.0001

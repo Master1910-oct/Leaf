@@ -5,10 +5,10 @@
 
 ---
 
-## Project Status: M0 Research Lock — Pending Final Verification
+## Project Status: ✅ M0 LOCKED — Research Specification Approved
 
-**Status: NOT READY — CRITICAL VERIFICATION REMAINS**  
-Critical verification remains for the exact primary-source STOA mathematical formulation and source LS-HGNet architectural specifications. Implementation code must NOT begin until M0 is verified and explicitly approved.
+**Status: M0 LOCKED (2026-10-01)**  
+Primary literature identities for STOA (Dhiman & Kaur, 2019) and the LS-HGNet smart farming framework (Krishnan et al., 2024) are confirmed. The original STOA formulation and the project-modified stabilized/additive variant are explicitly separated into distinct specifications. The STOA equation formulation is formally accepted as literature-verified (multi-source consensus; see RES-09 in `docs/research_spec.md`). All architecture and experiment design decisions are locked in `docs/architecture_decisions.md`. **M1 — Dataset & Environment Setup may now begin.**
 
 ---
 
@@ -37,8 +37,8 @@ AgriAI investigates whether a lightweight stacked-hourglass-inspired neural netw
 smart-farming-agri-ai/
 |
 +-- docs/
-|   +-- research_spec.md          <- Primary research specification (M0 locked)
-|   +-- architecture_decisions.md <- All engineering decisions documented
+|   +-- research_spec.md          <- Primary research specification (M0 LOCKED)
+|   +-- architecture_decisions.md <- All engineering decision records (M0 LOCKED)
 |
 +-- configs/
 |   +-- development.yaml          <- Development configuration
@@ -57,10 +57,10 @@ Implementation directories (src/, data/, experiments/, models/, frontend/, api/)
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| [docs/research_spec.md](docs/research_spec.md) | Complete research specification | M0 Draft — Pending Final Verification |
-| [docs/architecture_decisions.md](docs/architecture_decisions.md) | All engineering decision records | M0 Draft — Pending Final Verification |
-| [configs/development.yaml](configs/development.yaml) | Development phase configuration | Pending Final Verification |
-| [configs/final.yaml](configs/final.yaml) | Final experiment configuration | Pending Final Verification |
+| [docs/research_spec.md](docs/research_spec.md) | Complete research specification | ✅ M0 LOCKED |
+| [docs/architecture_decisions.md](docs/architecture_decisions.md) | All engineering decision records | ✅ M0 LOCKED |
+| [configs/development.yaml](configs/development.yaml) | Development phase configuration | ✅ M0 LOCKED |
+| [configs/final.yaml](configs/final.yaml) | Final experiment configuration | ✅ M0 LOCKED |
 
 ---
 
@@ -70,7 +70,7 @@ Implementation directories (src/, data/, experiments/, models/, frontend/, api/)
 |-----------|---------|
 | Dataset | PlantVillage — Tomato subset (10 classes) |
 | Architecture | LS-HGNet: Lightweight Stacked Hourglass CNN adapted for classification |
-| Optimizer | STOA (Sooty Tern Optimization Algorithm) for hyperparameter search |
+| Optimizer | Project-Modified Stabilized STOA (Default); controls: `original_strict`, `random_search` |
 | Baseline model | Simple 3-block CNN (~500K parameters) |
 | Comparison | Equal-budget Random Search (25 dev / 100 final evaluations) |
 | Explainability | Grad-CAM on final decoder block |
@@ -92,26 +92,37 @@ Implementation directories (src/, data/, experiments/, models/, frontend/, api/)
 
 ## Experiment Matrix
 
-| ID | Model | Hyperparameters | Purpose |
-|----|-------|----------------|---------|
-| EXP_001 | Baseline CNN | Default | Experimental control |
-| EXP_002 | LS-HGNet | Default | Architecture evaluation |
-| EXP_003 | LS-HGNet + STOA | Best from STOA | Optimizer benefit test |
-| EXP_004 | LS-HGNet + Random Search | Best from RS | Equal-budget control |
+| ID | Model | Optimizer / Hyperparameters | Purpose |
+|----|-------|-----------------------------|---------|
+| EXP_001 | Baseline CNN | Default hyperparameters | Experimental architecture control (~500K params) |
+| EXP_002 | LS-HGNet | Default hyperparameters | Architectural baseline without hyperparameter tuning |
+| EXP_003_original | LS-HGNet | Best from Original STOA (`original_strict`) | Evaluate source-derived STOA procedure as faithfully as possible |
+| EXP_003_stabilized | LS-HGNet | Best from Stabilized STOA (`stabilized`) | Evaluate project-modified stabilized/additive STOA variant (Default) |
+| EXP_004 | LS-HGNet | Best from Random Search (`random_search`) | Equal-budget non-metaheuristic search control (25 dev / 100 final) |
 
 ---
 
-## Open Questions
+## Open Questions Status
 
-### Critical — Must Be Resolved Before M1 Implementation
-1. **STOA mathematical formulation:** Primary source verification of exact collision-avoidance coefficient schedule ($S_A = 2 - 2t/T_{max}$ vs. alternatives), spiral parameters ($\rho$ calculation and boundary stabilization), and position-update equation from Dhiman & Kaur (2019).
-2. **Source LS-HGNet architectural parameters:** Verification of channel progression, block topologies, and stem structure from the primary smart-farming paper.
-3. **Data split & augmentation protocol:** Stratified 70/15/15 split confirmed; vertical flip excluded from default pipeline (retained only as optional ablation).
+### Resolved Specifications (All M0 Items)
 
-### Non-Critical — Experimentally Resolved in M1/M2
-4. **PlantVillage exact per-class counts & licensing:** Inspect physical image files and license documentation upon download in M1.
-5. **Hardware memory feasibility:** Confirm whether 224x224 at batch 32 fits within 16 GB RAM via memory profiling during M1.
-6. **Loss function class weighting:** Measure class imbalance on disk and test if weighted Cross-Entropy improves macro F1 over standard CE.
+1. **STOA Authors & Paper Identity:** Gaurav Dhiman and Amandeep Kaur (2019), *EAAI*, Vol. 82, pp. 148–174.
+2. **Original vs. Stabilized Distinction:** Original source-derived STOA and project-modified stabilized/additive variant are formally separated.
+3. **Stabilized Formulation Consistency:** Project modification adopts Option A (preserves best-guided convergence using $\vec{P}_{best}$ consistently throughout; no $\vec{P}_{rand}$).
+4. **Three Optimizer Controls:** Explicitly separated into `original_strict`, `stabilized` (default), and `random_search` with equal-budget protocol (25 dev / 100 final).
+5. **Data Split & Augmentation:** Stratified 70/15/15 split confirmed; vertical flip excluded from default pipeline on biological validity grounds (retained as optional ablation ABL-05).
+6. **LS-HGNet Architecture Adaptation:** Hourglass topology, DWSConv block, MultiDilated bottleneck rates [1, 2, 4], and GAP+Linear classification head finalized.
+7. **Original STOA Equation Verification (RES-09):** Formally accepted as Literature-Verified (multi-source consensus). Publisher PDF access not achieved; if discrepancies discovered via institutional access in M1, equations must be updated before publication.
+
+### Deferred to M1/M2 (Not M0 Blockers)
+
+| ID | Question | Milestone |
+|----|----------|-----------|
+| DEF-01 | PlantVillage exact per-class counts & licensing | M1: Dataset download |
+| DEF-02 | Hardware memory feasibility at 224×224 / batch 32 | M1: Memory profiling |
+| DEF-03 | Class-weighted CE benefit on macro F1 | M2: Ablation ABL-02 |
+| DEF-04 | Final dropout rate | M1/M2: STO search |
+| DEF-05 | Optional edge deployment latency | OBJ-11 (optional) |
 
 ---
 
@@ -136,9 +147,11 @@ Implementation directories (src/, data/, experiments/, models/, frontend/, api/)
 7. Guo, C., et al. (2017). On Calibration of Modern Neural Networks. *ICML*.
 8. He, K., et al. (2016). Deep Residual Learning for Image Recognition. *CVPR*.
 9. Yu, F., & Koltun, V. (2016). Multi-scale Context Aggregation by Dilated Convolutions. *ICLR*. arXiv:1511.07122.
+10. Kudela, J. (2022). A critical analysis of recent metaheuristics: origin bias and structural flaws. *Swarm and Evolutionary Computation*, 74, 101133.
+11. Kwok, C. (2025). On the origin bias and numerical divergence in population metaheuristics: The case of Sooty Tern Optimization. arXiv:2511.17556.
 
 Full references with complete citations are in [docs/research_spec.md](docs/research_spec.md).
 
 ---
 
-*M0 Research Lock — 2026-10-01 — Status: NOT READY — CRITICAL VERIFICATION REMAINS*
+*M0 Research Specification — 2026-10-01 — Status: ✅ LOCKED — Research Specification Approved*

@@ -1,0 +1,32 @@
+model:
+  architecture: LS-HGNet
+  base_channels: 64
+  num_stacks: 3
+  encoder_levels: 4
+  dilation_rates:
+  - 1
+  - 2
+  - 4
+  dropout: 0.3
+  num_classes: 10
+  total_parameters: 8041354
+training:
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  batch_size: 32
+  dropout: 0.3
+  epochs: 5
+  optimizer: adamw
+  scheduler: cosine_annealing
+  loss: cross_entropy
+  seed: 42
+selection:
+  selected_candidate: candidate_a_default
+  validation_macro_f1: 0.881642
+  validation_accuracy: 0.910793
+test_evaluation:
+  accuracy: 0.907122
+  macro_f1: 0.873981
+  macro_precision: 0.893473
+  macro_recall: 0.875916
+status: FROZEN

@@ -1,0 +1,20 @@
+{
+  "status": "LOCKED",
+  "selected_candidate_id": "candidate_a_default",
+  "selection_rationale": "Highest validation Macro-F1 on full 12,712 training split / 2,724 validation split at 224x224",
+  "architecture": "LS-HGNet (fixed M4)",
+  "hyperparameters": {
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.3,
+    "batch_size": 32
+  },
+  "validation_metrics": {
+    "accuracy": 0.910793,
+    "macro_precision": 0.895255,
+    "macro_recall": 0.886605,
+    "macro_f1": 0.881642
+  },
+  "checkpoint_path": "results\\m7_final_selection\\candidate_a_default\\best_model.pt",
+  "isolation_verified": "Test split strictly protected; 0 test samples accessed during selection."
+}

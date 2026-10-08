@@ -1,0 +1,4 @@
+Target layer: stacked_hourglass.stacks.2.decoder_blocks.3
+Module path: model.stacked_hourglass.stacks.2.decoder_blocks.3
+Why this layer was selected: Per Selvaraju et al. (2017) and the AgriAI architecture decisions (M0/M4), this module represents the final spatial decoder block of the last Hourglass stack, immediately before Global Average Pooling (GAP). It retains the deepest, most class-discriminative semantic representations while preserving 56x56 spatial resolution.
+Feature-map shape: [1, 64, 56, 56]

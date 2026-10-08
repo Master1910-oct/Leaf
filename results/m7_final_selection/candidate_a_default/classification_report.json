@@ -1,0 +1,75 @@
+{
+  "Tomato___Bacterial_spot": {
+    "precision": 0.9193548387096774,
+    "recall": 0.8934169278996865,
+    "f1-score": 0.9062003179650239,
+    "support": 319.0
+  },
+  "Tomato___Early_blight": {
+    "precision": 0.9279279279279279,
+    "recall": 0.6866666666666666,
+    "f1-score": 0.789272030651341,
+    "support": 150.0
+  },
+  "Tomato___Late_blight": {
+    "precision": 0.9035369774919614,
+    "recall": 0.9790940766550522,
+    "f1-score": 0.939799331103679,
+    "support": 287.0
+  },
+  "Tomato___Leaf_Mold": {
+    "precision": 0.9568345323741008,
+    "recall": 0.9300699300699301,
+    "f1-score": 0.9432624113475178,
+    "support": 143.0
+  },
+  "Tomato___Septoria_leaf_spot": {
+    "precision": 0.8431372549019608,
+    "recall": 0.9699248120300752,
+    "f1-score": 0.9020979020979021,
+    "support": 266.0
+  },
+  "Tomato___Spider_mites Two-spotted_spider_mite": {
+    "precision": 0.7243401759530792,
+    "recall": 0.9840637450199203,
+    "f1-score": 0.8344594594594594,
+    "support": 251.0
+  },
+  "Tomato___Target_Spot": {
+    "precision": 0.873015873015873,
+    "recall": 0.5238095238095238,
+    "f1-score": 0.6547619047619048,
+    "support": 210.0
+  },
+  "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+    "precision": 0.9974259974259975,
+    "recall": 0.9651307596513076,
+    "f1-score": 0.9810126582278481,
+    "support": 803.0
+  },
+  "Tomato___Tomato_mosaic_virus": {
+    "precision": 0.8153846153846154,
+    "recall": 0.9464285714285714,
+    "f1-score": 0.8760330578512396,
+    "support": 56.0
+  },
+  "Tomato___healthy": {
+    "precision": 0.9915966386554622,
+    "recall": 0.9874476987447699,
+    "f1-score": 0.989517819706499,
+    "support": 239.0
+  },
+  "accuracy": 0.9107929515418502,
+  "macro avg": {
+    "precision": 0.8952554831840654,
+    "recall": 0.8866052711975504,
+    "f1-score": 0.8816416893172414,
+    "support": 2724.0
+  },
+  "weighted avg": {
+    "precision": 0.9183587634882575,
+    "recall": 0.9107929515418502,
+    "f1-score": 0.9075957341655086,
+    "support": 2724.0
+  }
+}

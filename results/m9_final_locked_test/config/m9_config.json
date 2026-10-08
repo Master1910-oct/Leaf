@@ -1,0 +1,32 @@
+{
+  "checkpoint": "D:\\Leaf\\results\\m7_3_full_training\\checkpoints\\best_model.pt",
+  "checkpoint_sha256": "4E4145378F2DE852AB7EABE1E72FE7AE7AFA31F608E0F0E246E06C41A7F098A8",
+  "architecture": {
+    "name": "LS-HGNet",
+    "in_channels": 3,
+    "num_classes": 10,
+    "base_channels": 64,
+    "num_stacks": 3,
+    "encoder_levels": 4,
+    "dilation_rates": [
+      1,
+      2,
+      4
+    ],
+    "dropout": 0.3,
+    "total_parameters": 8041354
+  },
+  "evaluation_protocol": {
+    "batch_size": 32,
+    "image_size": 224,
+    "device": "CPU",
+    "single_pass": true,
+    "frozen_temperature": 1.155831
+  },
+  "hardware": {
+    "cpu": "Intel64 Family 6 Model 191 Stepping 2, GenuineIntel",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "torch_version": "2.2.2+cpu"
+  }
+}

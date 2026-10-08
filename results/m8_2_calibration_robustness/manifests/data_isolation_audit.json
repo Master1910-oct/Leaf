@@ -1,0 +1,34 @@
+{
+  "test_csv_opened": false,
+  "test_images_loaded": false,
+  "test_evaluated": false,
+  "val_csv": "data/val.csv",
+  "subsets": [
+    {
+      "subset_name": "calibration_subset",
+      "n_samples": 1362,
+      "all_samples_from_val": true,
+      "test_samples_detected": false
+    },
+    {
+      "subset_name": "calibration_holdout",
+      "n_samples": 1362,
+      "all_samples_from_val": true,
+      "test_samples_detected": false
+    },
+    {
+      "subset_name": "robustness_subset",
+      "n_samples": 1362,
+      "all_samples_from_val": true,
+      "test_samples_detected": false
+    },
+    {
+      "subset_name": "deployment_benchmark",
+      "n_samples": 1,
+      "all_samples_from_val": true,
+      "test_samples_detected": false,
+      "note": "Uses first row of holdout_df (val sample only)"
+    }
+  ],
+  "isolation_confirmed": true
+}

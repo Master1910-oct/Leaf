@@ -1,0 +1,21 @@
+{
+  "source_csv": "data/train.csv",
+  "random_seed": 42,
+  "subset_frac": 0.2,
+  "total_training_samples": 12712,
+  "subset_samples": 2542,
+  "samples_per_class": {
+    "0": 298,
+    "1": 140,
+    "2": 267,
+    "3": 133,
+    "4": 248,
+    "5": 234,
+    "6": 197,
+    "7": 750,
+    "8": 52,
+    "9": 223
+  },
+  "subset_csv": "results\\m7_1_sto_refinement\\rapid_sto\\sto_train_subset_20pct.csv",
+  "created_utc": "2026-10-06T16:11:50.128939+00:00"
+}

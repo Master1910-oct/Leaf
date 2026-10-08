@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriAI — Tomato Leaf Pathology Diagnosis | LS-HGNet</title>
+  <meta name="description" content="Precision tomato leaf disease classification using the frozen Lightweight Stacked Hourglass Network (LS-HGNet) with 8.04M parameters.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow glow-top-left"></div>
+  <div class="ambient-glow glow-top-right"></div>
+
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="container header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">AgriAI <span class="highlight">Vision</span></h1>
+          <p class="brand-subtitle">Smart Farming Foliar Pathology Diagnostic Suite</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <span class="badge badge-model" title="Lightweight Stacked Hourglass Network">
+          <span class="badge-dot"></span> LS-HGNet (8.04M Params)
+        </span>
+        <span class="badge badge-status" id="backendStatusBadge">
+          <span class="badge-dot pulse"></span> Model Online
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="container main-layout">
+
+    <!-- Hero / Intro -->
+    <section class="hero-section">
+      <div class="hero-tag">Frozen Research Architecture (M7.3 & M9 Verified)</div>
+      <h2 class="hero-title">Automated Tomato Foliage Disease Classification</h2>
+      <p class="hero-description">
+        Upload or photograph a tomato leaf to perform instant multi-scale pathological assessment.
+        Powered by the frozen <strong>LS-HGNet</strong> architecture featuring multi-dilation bottleneck feature fusion.
+      </p>
+    </section>
+
+    <!-- Error / Notification Banner -->
+    <div class="notification-banner hidden" id="notificationBanner" role="alert">
+      <div class="notification-icon">⚠️</div>
+      <div class="notification-content" id="notificationMessage">An error occurred.</div>
+      <button class="notification-close" id="notificationClose" aria-label="Dismiss notification">&times;</button>
+    </div>
+
+    <!-- Diagnostic Workspace Grid -->
+    <div class="workspace-grid">
+
+      <!-- Left Column: Image Ingestion & Input -->
+      <section class="card upload-card" aria-labelledby="uploadHeading">
+        <div class="card-header">
+          <div class="card-step-badge">1</div>
+          <div>
+            <h3 id="uploadHeading" class="card-title">Upload Leaf Image</h3>
+            <p class="card-subtitle">Supported formats: JPG, PNG, WEBP (Max 16 MB)</p>
+          </div>
+        </div>
+
+        <!-- Interactive Drag-and-Drop Zone -->
+        <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Drop leaf image here or click to browse">
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" class="visually-hidden">
+          
+          <div class="dropzone-idle" id="dropzoneIdle">
+            <div class="upload-illustration">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+                <path d="M12 12v9"/>
+                <path d="m16 16-4-4-4 4"/>
+              </svg>
+            </div>
+            <p class="dropzone-text"><strong>Click to browse</strong> or drag and drop leaf photo</p>
+            <p class="dropzone-hint">Position the affected leaf centered under good lighting</p>
+          </div>
+
+          <!-- Live Image Preview Stage -->
+          <div class="dropzone-preview hidden" id="dropzonePreview">
+            <div class="preview-wrapper">
+              <img id="previewImage" alt="Leaf preview" class="preview-img">
+              <div class="preview-meta" id="previewMeta">resolution</div>
+            </div>
+            <div class="preview-actions">
+              <button type="button" class="btn btn-secondary btn-sm" id="btnReplaceImage">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+                Replace
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" id="btnRemoveImage">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sample Leaf Test Strip -->
+        <div class="sample-strip">
+          <span class="sample-label">Quick Test Samples:</span>
+          <div class="sample-buttons" id="sampleButtons">
+            <button type="button" class="sample-btn" data-sample="early_blight" title="Test with Early Blight sample">Early Blight</button>
+            <button type="button" class="sample-btn" data-sample="septoria" title="Test with Septoria Spot sample">Septoria Spot</button>
+            <button type="button" class="sample-btn" data-sample="spider_mites" title="Test with Spider Mites sample">Spider Mites</button>
+            <button type="button" class="sample-btn" data-sample="healthy" title="Test with Healthy Leaf sample">Healthy</button>
+          </div>
+        </div>
+
+        <!-- Analyze Action Button -->
+        <div class="upload-footer">
+          <button type="button" class="btn btn-primary btn-block" id="btnAnalyze" disabled>
+            <span class="btn-spinner hidden" id="analyzeSpinner"></span>
+            <span class="btn-text" id="analyzeBtnText">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 21-4.3-4.3"/><circle cx="11" cy="11" r="8"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+              Analyze Leaf
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Column: Diagnostic Result Card -->
+      <section class="card result-card" id="resultCard" aria-labelledby="resultHeading" aria-live="polite">
+        <div class="card-header">
+          <div class="card-step-badge">2</div>
+          <div>
+            <h3 id="resultHeading" class="card-title">Diagnostic Assessment</h3>
+            <p class="card-subtitle">Multi-class inference and confidence telemetry</p>
+          </div>
+        </div>
+
+        <!-- Empty State (Awaiting Upload) -->
+        <div class="result-placeholder" id="resultPlaceholder">
+          <div class="placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 16v-4"/>
+              <path d="M12 8h.01"/>
+            </svg>
+          </div>
+          <h4>No Image Analyzed</h4>
+          <p>Upload a tomato leaf image and click <strong>"Analyze Leaf"</strong> to view classification metrics, confidence distribution, and management recommendations.</p>
+        </div>
+
+        <!-- Populated Results Container -->
+        <div class="result-content hidden" id="resultContent">
+          
+          <!-- Primary Diagnosis Banner -->
+          <div class="diagnosis-banner" id="diagnosisBanner">
+            <div class="banner-top">
+              <span class="status-pill" id="statusPill">Potential Disease Detected</span>
+              <span class="latency-pill" id="latencyPill">⚡ 132 ms</span>
+            </div>
+            <h4 class="diagnosis-name" id="diagnosisName">Tomato — Early Blight</h4>
+            <p class="diagnosis-desc" id="diagnosisDesc">Fungal infection characterized by concentric necrotic rings.</p>
+            
+            <!-- Primary Confidence Gauge -->
+            <div class="confidence-gauge">
+              <div class="gauge-header">
+                <span class="gauge-label">Model Confidence</span>
+                <span class="gauge-value" id="primaryConfidenceValue">96.8%</span>
+              </div>
+              <div class="gauge-track">
+                <div class="gauge-bar" id="primaryConfidenceBar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quality Warning (Conditional) -->
+          <div class="quality-alert hidden" id="qualityAlert">
+            <span class="alert-icon">⚠️</span>
+            <span id="qualityAlertText">Low resolution image detected.</span>
+          </div>
+
+          <!-- Confidence Tier -->
+          <div class="confidence-tier-row" id="confidenceTierRow">
+            <span class="conf-tier-label">Confidence Level:</span>
+            <span class="conf-tier-badge" id="confidenceTierBadge">High</span>
+          </div>
+
+          <!-- Top-3 Differential Diagnoses -->
+          <div class="predictions-section">
+            <h5 class="section-heading">Top-3 Differential Diagnoses</h5>
+            <div class="top-predictions-list" id="topPredictionsList">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+          <!-- Grad-CAM Visual Attribution -->
+          <div class="gradcam-panel hidden" id="gradcamPanel">
+            <div class="gradcam-header">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <h5>Model Explainability — Grad-CAM Attribution</h5>
+            </div>
+            <p class="gradcam-subtitle">Heatmap highlights the leaf regions most influential to the prediction. Warm colours indicate high model attention.</p>
+            <div class="gradcam-image-wrapper">
+              <img id="gradcamImage" class="gradcam-img" alt="Grad-CAM heatmap overlay" />
+              <div class="gradcam-legend">
+                <span class="legend-low">Low</span>
+                <div class="legend-bar"></div>
+                <span class="legend-high">High</span>
+                <span class="legend-label">Attention</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommended Action Panel -->
+          <div class="recommendation-panel" id="recommendationPanel">
+            <div class="recommendation-header">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <h5>Recommended Crop Management</h5>
+            </div>
+            <p class="recommendation-text" id="recommendationText">
+              Prune severely affected lower leaves to promote canopy airflow.
+            </p>
+            <div class="disclaimer-note">
+              <strong>Advisory Notice:</strong> Model predictions are automated informational guidance and should be verified by an agricultural extension specialist before applying chemical interventions.
+            </div>
+          </div>
+
+          <!-- Architecture & Cryptographic Telemetry -->
+          <div class="telemetry-bar">
+            <span><strong>Model:</strong> LS-HGNet (8.04M params)</span>
+            <span><strong>Resolution:</strong> 224×224</span>
+            <span id="telemetryHash"><strong>Checkpoint:</strong> 4E4145... (Verified)</span>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- Informational Pathology Reference Drawer -->
+    <section class="pathology-guide card">
+      <h3 class="guide-title">Trained Pathology Reference (10 Classes)</h3>
+      <p class="guide-subtitle">The frozen LS-HGNet model is trained and validated on the following conditions:</p>
+      <div class="pathology-tags">
+        <span class="path-tag disease">Bacterial Spot</span>
+        <span class="path-tag disease">Early Blight</span>
+        <span class="path-tag disease">Late Blight</span>
+        <span class="path-tag disease">Leaf Mold</span>
+        <span class="path-tag disease">Septoria Leaf Spot</span>
+        <span class="path-tag disease">Two-Spotted Spider Mites</span>
+        <span class="path-tag disease">Target Spot</span>
+        <span class="path-tag disease">Yellow Leaf Curl Virus</span>
+        <span class="path-tag disease">Mosaic Virus</span>
+        <span class="path-tag healthy">Healthy Foliage</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-container">
+      <p>© 2026 AgriAI Project — Frozen Research Architecture (Milestones M0–M12).</p>
+      <p class="footer-meta">LS-HGNet + Sooty Tern Optimization Research Pipeline | D:/Leaf</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

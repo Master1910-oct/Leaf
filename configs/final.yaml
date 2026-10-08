@@ -1,6 +1,6 @@
 # AgriAI — Final Configuration
 # Adaptive Smart Farming Framework using STO-Optimized LS-HGNet
-# M0 Research Lock — Pending Final Verification (Final Experiments Phase)
+# M0 Research Specification — LOCKED (Final Experiments Phase)
 
 # ─────────────────────────────────────────────────────────
 # EXPERIMENT IDENTITY
@@ -80,9 +80,11 @@ model:
 # ─────────────────────────────────────────────────────────
 baseline:
   architecture: "BaselineCNN"
-  target_params: 500000
-  num_blocks: 3
-  channels: [32, 64, 128]
+  target_params: 500000   # Approximately 500K parameters
+  num_blocks: 4
+  channels: [32, 64, 128, 256]
+  fc_dim: 256
+  dropout: 0.2
 
 # ─────────────────────────────────────────────────────────
 # TRAINING — Default Hyperparameters
@@ -100,13 +102,26 @@ training:
   loss: "cross_entropy"   # Update to weighted CE if class imbalance is significant
 
 # ─────────────────────────────────────────────────────────
-# STO HYPERPARAMETER OPTIMIZATION
+# HYPERPARAMETER OPTIMIZATION (STOA & Controls)
 # ─────────────────────────────────────────────────────────
+optimizer:
+  name: "stoa"
+  # The default optimizer is a project-modified stabilized STOA variant.
+  # Supported variants:
+  #   - "stabilized"       : Project-modified stabilized/additive STOA variant (Default)
+  #   - "original_strict"  : Faithful source-derived STOA replication (Ablation / Stability study)
+  variant: "stabilized"
+
 stoa:
   # Final budget (Engineering Decision — see architecture_decisions.md)
   num_agents: 10
   num_iterations: 10
   total_evaluations: 100  # = num_agents * num_iterations
+
+  # Supported variants: "stabilized" (default, project modification), "original_strict" (faithful source replication)
+  variant: "stabilized"   # The default optimizer is a project-modified stabilized STOA variant
+  damping_factor: 0.1     # Project modification: damped spiral radius to prevent exponential divergence
+  boundary_handling: "clip" # Clamping to valid hyperparameter bounds [lb, ub]
 
   search_space:
     learning_rate:
@@ -128,9 +143,6 @@ stoa:
   fitness: "1_minus_macro_f1"
   fitness_data: "validation"
 
-  # IMPORTANT: STOA exact formulation TO BE VERIFIED from primary source Dhiman & Kaur (2019) before M1 implementation
-  boundary_handling: "clip"
-
 # ─────────────────────────────────────────────────────────
 # RANDOM SEARCH (Equal Budget)
 # ─────────────────────────────────────────────────────────
@@ -143,8 +155,9 @@ random_search:
 # ─────────────────────────────────────────────────────────
 # EXP_001: Baseline CNN, default HPs
 # EXP_002: LS-HGNet, default HPs
-# EXP_003: LS-HGNet + STOA best HPs
-# EXP_004: LS-HGNet + Random Search best HPs
+# EXP_003_original: LS-HGNet + Original/Strict STOA (original_strict)
+# EXP_003_stabilized: LS-HGNet + Stabilized STOA (stabilized - Default)
+# EXP_004: LS-HGNet + Random Search best HPs (random_search)
 experiments:
   EXP_001:
     model: "BaselineCNN"
@@ -154,12 +167,19 @@ experiments:
     model: "LSHGNet"
     hyperparameters: "default"
     seeds: [42, 123, 456]
-  EXP_003:
+  EXP_003_original:
     model: "LSHGNet"
-    hyperparameters: "stoa_best"
+    optimizer_variant: "original_strict"
+    hyperparameters: "stoa_original_best"
+    seeds: [42, 123, 456]
+  EXP_003_stabilized:
+    model: "LSHGNet"
+    optimizer_variant: "stabilized"
+    hyperparameters: "stoa_stabilized_best"
     seeds: [42, 123, 456]
   EXP_004:
     model: "LSHGNet"
+    optimizer_variant: "random_search"
     hyperparameters: "random_search_best"
     seeds: [42, 123, 456]
 

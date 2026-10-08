@@ -1,0 +1,14 @@
+{
+  "total_samples": 16011,
+  "correct": 15321,
+  "incorrect": 690,
+  "accuracy": 95.6905,
+  "macro_precision": 95.0206,
+  "macro_recall": 95.2743,
+  "macro_f1": 95.0342,
+  "weighted_f1": 95.6664,
+  "mean_confidence": 95.5876,
+  "median_confidence": 99.88,
+  "mean_conf_correct": 96.714,
+  "mean_conf_incorrect": 70.5749
+}

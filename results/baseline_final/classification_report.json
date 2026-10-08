@@ -1,0 +1,75 @@
+{
+  "Tomato___Bacterial_spot": {
+    "precision": 0.9493243243243243,
+    "recall": 0.8808777429467085,
+    "f1-score": 0.9138211382113821,
+    "support": 319.0
+  },
+  "Tomato___Early_blight": {
+    "precision": 0.875,
+    "recall": 0.5133333333333333,
+    "f1-score": 0.6470588235294118,
+    "support": 150.0
+  },
+  "Tomato___Late_blight": {
+    "precision": 0.8591549295774648,
+    "recall": 0.6376306620209059,
+    "f1-score": 0.732,
+    "support": 287.0
+  },
+  "Tomato___Leaf_Mold": {
+    "precision": 0.6910112359550562,
+    "recall": 0.8601398601398601,
+    "f1-score": 0.7663551401869159,
+    "support": 143.0
+  },
+  "Tomato___Septoria_leaf_spot": {
+    "precision": 0.8295964125560538,
+    "recall": 0.6954887218045113,
+    "f1-score": 0.7566462167689162,
+    "support": 266.0
+  },
+  "Tomato___Spider_mites Two-spotted_spider_mite": {
+    "precision": 0.5829268292682926,
+    "recall": 0.952191235059761,
+    "f1-score": 0.7231467473524962,
+    "support": 251.0
+  },
+  "Tomato___Target_Spot": {
+    "precision": 0.9166666666666666,
+    "recall": 0.41904761904761906,
+    "f1-score": 0.5751633986928104,
+    "support": 210.0
+  },
+  "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+    "precision": 0.8802197802197802,
+    "recall": 0.9975093399750934,
+    "f1-score": 0.9352014010507881,
+    "support": 803.0
+  },
+  "Tomato___Tomato_mosaic_virus": {
+    "precision": 0.8225806451612904,
+    "recall": 0.9107142857142857,
+    "f1-score": 0.864406779661017,
+    "support": 56.0
+  },
+  "Tomato___healthy": {
+    "precision": 0.9354838709677419,
+    "recall": 0.9707112970711297,
+    "f1-score": 0.9527720739219713,
+    "support": 239.0
+  },
+  "accuracy": 0.8296622613803231,
+  "macro avg": {
+    "precision": 0.8341964694696671,
+    "recall": 0.7837644097113208,
+    "f1-score": 0.7866571719375709,
+    "support": 2724.0
+  },
+  "weighted avg": {
+    "precision": 0.8500093449643256,
+    "recall": 0.8296622613803231,
+    "f1-score": 0.8219121229842956,
+    "support": 2724.0
+  }
+}

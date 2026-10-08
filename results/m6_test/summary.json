@@ -1,0 +1,46 @@
+{
+  "variant": "stabilized",
+  "num_agents": 2,
+  "num_iterations": 1,
+  "total_evaluations": 4,
+  "eval_epochs": 1,
+  "image_size": 128,
+  "seed": 42,
+  "best_fitness": 0.9121,
+  "best_val_macro_f1": 0.08789999999999998,
+  "best_params": {
+    "learning_rate": 0.00353111691382141,
+    "weight_decay": 5.695262671673527e-05,
+    "dropout": 0.42929895995569123,
+    "batch_size": 32
+  },
+  "best_position": [
+    -2.4520879028880733,
+    -4.24448624099179,
+    0.42929895995569123,
+    1.3947360581187278
+  ],
+  "convergence": [
+    0.9121
+  ],
+  "convergence_f1": [
+    0.08789999999999998
+  ],
+  "all_fitnesses": [
+    0.9121,
+    0.9259,
+    0.9121,
+    0.9664
+  ],
+  "all_f1": [
+    0.08789999999999998,
+    0.07410000000000005,
+    0.08789999999999998,
+    0.03359999999999996
+  ],
+  "runtime_s": 157.08202219999998,
+  "total_runtime_s": 157.0821171,
+  "base_channels": 64,
+  "num_stacks": 3,
+  "encoder_levels": 4
+}

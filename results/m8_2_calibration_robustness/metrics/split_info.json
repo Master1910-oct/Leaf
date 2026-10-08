@@ -1,0 +1,35 @@
+{
+  "seed": 42,
+  "split_strategy": "StratifiedShuffleSplit",
+  "calib_fraction": 0.5,
+  "total_val_samples": 2724,
+  "calib_samples": 1362,
+  "holdout_samples": 1362,
+  "calib_class_counts": {
+    "0": 159,
+    "1": 75,
+    "2": 144,
+    "3": 72,
+    "4": 133,
+    "5": 125,
+    "6": 105,
+    "7": 401,
+    "8": 28,
+    "9": 120
+  },
+  "holdout_class_counts": {
+    "0": 160,
+    "1": 75,
+    "2": 143,
+    "3": 71,
+    "4": 133,
+    "5": 126,
+    "6": 105,
+    "7": 402,
+    "8": 28,
+    "9": 119
+  },
+  "overlap_count": 0,
+  "source_csv": "data/val.csv",
+  "test_csv_accessed": false
+}

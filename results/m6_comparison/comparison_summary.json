@@ -1,0 +1,26 @@
+{
+  "budget_evaluations": 30,
+  "sto": {
+    "best_val_macro_f1": 0.244,
+    "best_fitness": 0.756,
+    "best_params": {
+      "learning_rate": 0.004977535180202662,
+      "weight_decay": 1.8342047422244212e-06,
+      "dropout": 0.5,
+      "batch_size": 32
+    },
+    "runtime_s": 4458.4992689
+  },
+  "random_search": {
+    "best_val_macro_f1": 0.27170000000000005,
+    "best_fitness": 0.7283,
+    "best_params": {
+      "learning_rate": 0.004752972537164875,
+      "weight_decay": 5.25439067525725e-06,
+      "dropout": 0.4310781457546182,
+      "batch_size": 16
+    },
+    "runtime_s": 5005.5793452
+  },
+  "f1_difference_sto_minus_random": -0.027700000000000058
+}
